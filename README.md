@@ -159,9 +159,58 @@ haraka-backend/
 ├── manage.py
 
 ├── requirements.txt
+
 └── .env                # Environment variables
 
+## Frontend structure
 
+haraka-frontend/
+
+├── pages/              # Next.js pages
+
+├── components/         # React components
+
+├── styles/             # CSS styles
+
+├── utils/              # Helper functions
+
+├── api/           # API services
+
+├── public/             # Static assets
+
+├── next.config.js
+
+├── package.json
+
+└── .env         # Environment variables
+
+## 📚 API Documentation
+
+### Authentication Endpoints
+
+#### `POST /api/users/register/`
+Register a new user  
+**Request Body:**
+```json
+{
+  "first_name": "string",
+  "last_name:"String",
+  "email": "string",
+  "password": "string",
+}
+
+
+
+#### `POST /api/users/register/`
+Register a new user  
+**Request Body:**
+```json
+{
+  "username": "string",
+  "email": "string",
+  "password": "string",
+  "password2": "string"
+}
    
    
    
