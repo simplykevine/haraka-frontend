@@ -145,14 +145,21 @@ Before you begin, ensure you have the following installed:
 ## Backend structure
 
 haraka-backend/
-├── config/              # Django project settings
+
+├── api/              # Django project settings
 
 ├── users/              # User management app
+
 ├── reviews/            # Reviews app
+
 ├── agents/             # Agents app
+
 ├── tools/              # Tools app
+
 ├── manage.py
+
 ├── requirements.txt
+
 └── .env                # Environment variables
 
 
