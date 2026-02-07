@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Haraka - Full-Stack Web Application
 
-## Getting Started
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/django-4.0%2B-green.svg)](https://www.djangoproject.com/)
+[![Next.js](https://img.shields.io/badge/next.js-13%2B-black.svg)](https://nextjs.org/)
 
-First, run the development server:
+## 📋 Table of Contents
+- [Project Overview](#project-overview)
+- [Tech Stack](#tech-stack)
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Backend Setup](#backend-setup)
+  - [Frontend Setup](#frontend-setup)
+- [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
+- [Design & Mockups](#design--mockups)
+- [Deployment](#deployment)
+- [Video Demo](#video-demo)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🎯 Project Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Haraka is a comprehensive full-stack web application designed to provide a seamless user experience with robust authentication and authorization features. This project demonstrates modern web development practices using Django for the backend and Next.js for the frontend, with token-based authentication and responsive design.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Repository Links:**
+- Backend: https://github.com/simplykevine/haraka-backend
+- Frontend: https://github.com/simplykevine/haraka-frontend
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
 
-## Learn More
+### Backend
+- **Framework:** Django 4.0+
+- **Database:** PostgreSQL
+- **Authentication:** Django REST Framework with Token Authentication
+- **Environment:** Python 3.8+
 
-To learn more about Next.js, take a look at the following resources:
+### Frontend
+- **Framework:** Next.js 13+
+- **Language:** JavaScript/TypeScript
+- **Styling:** CSS Modules / Tailwind CSS
+- **State Management:** React Context / Redux
+- **HTTP Client:** Axios
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Development Tools
+- **Version Control:** Git
+- **Environment Variables:** .env files
+- **API Testing:** Postman
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ✨ Features
 
-## Deploy on Vercel
+### Frontend Features
+- **Authentication System:**
+  - User registration with form validation
+  - Login with token-based authentication
+  - Field validation and error handling
+  - Edge case management
+  - Responsive design for all devices
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **User Interface:**
+  - Clean and modern UI design
+  - Intuitive navigation
+  - Responsive layout
+  - Form validation with real-time feedback
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Backend Features
+- **RESTful API Endpoints:**
+  - `/api/users/` - User management
+  - `/api/reviews/` - Review system
+  - `/api/agents/` - Agent management
+  - `/api/tools/` - Tools management
+
+- **Security:**
+  - Token-based authentication
+  - Role-based authorization
+  - Protected API endpoints
+  - Environment variable security
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+- Node.js (v16 or higher)
+- Python 3.8+
+- PostgreSQL
+- Git
+- npm or yarn
+
+### Backend Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/simplykevine/haraka-backend.git
+   cd haraka-backend
