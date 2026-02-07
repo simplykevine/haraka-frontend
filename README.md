@@ -96,3 +96,65 @@ Before you begin, ensure you have the following installed:
    ```bash
    git clone https://github.com/simplykevine/haraka-backend.git
    cd haraka-backend
+
+2. **Create a virtual environment:**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+
+4. **Configure environment variables:**
+ -Create a .env file in the root directory:
+
+5. **Run migrations**
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+
+6. **Start the development server**
+     ```bash
+   python manage.py runserver
+
+## Frontend Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/simplykevine/haraka-frontend.git
+   cd haraka-frontend
+
+2. **Install dependencies**
+    ```bash
+   npm install
+3. **Configure environment variables**
+   Create a .env file: 
+   ```bash
+   BASE_URL=http://localhost:8000/api
+
+4. **Run the development server**
+   ```bash
+   npm run dev
+5. **Open your browser**
+    Navigate to
+   ```bash
+   http://localhost:3000
+
+## Project Structure
+# Backend structure
+
+haraka-backend/
+├── config/              # Django project settings
+├── users/              # User management app
+├── reviews/            # Reviews app
+├── agents/             # Agents app
+├── tools/              # Tools app
+├── manage.py
+├── requirements.txt
+└── .env                # Environment variables
+
+
+   
+   
+   
