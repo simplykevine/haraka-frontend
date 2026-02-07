@@ -159,7 +159,6 @@ haraka-backend/
 ├── manage.py
 
 ├── requirements.txt
-
 └── .env                # Environment variables
 
 
