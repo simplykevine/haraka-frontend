@@ -298,6 +298,9 @@ haraka-frontend/
 - Login Page
 <img width="1280" height="824" alt="MacBook Air - 66" src="https://github.com/user-attachments/assets/29afeac8-a7b0-4d7c-b87b-aed1318be370" />
 
+- Zeno chat
+<img width="5120" height="3296" alt="chat" src="https://github.com/user-attachments/assets/91222e07-99ad-460c-8bf3-90199bc3ecec" />
+
 
 ### 🌐 Deployment
 
