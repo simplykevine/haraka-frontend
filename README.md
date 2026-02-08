@@ -282,6 +282,9 @@ haraka-frontend/
                         │ • embedding_vector         │
                         │ • created_at               │
                         └────────────────────────────┘
+
+
+
 ### 🎨 Design & Mockups
 
 #### Figma Mockups
@@ -301,6 +304,79 @@ haraka-frontend/
 - Zeno chat
 <img width="5120" height="3296" alt="chat" src="https://github.com/user-attachments/assets/91222e07-99ad-460c-8bf3-90199bc3ecec" />
 
+### Backend: User Serializer with Password Validation (Django REST Framework)
+
+```python
+# api/serializers.py
+from rest_framework import serializers
+from django.core.exceptions import ValidationError
+import re
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'email', 'role', 'image', 'created_at', 'password']
+        extra_kwargs = {
+            'first_name': {'required': True, 'allow_blank': False},
+            'last_name': {'required': True, 'allow_blank': False},
+            'email': {'required': True, 'allow_blank': False},
+        }
+
+    def validate_password(self, value):
+        if len(value) < 8:
+            raise ValidationError("Password must be at least 8 characters long.")
+        if not re.search(r'[A-Z]', value):
+            raise ValidationError("Password must contain at least one uppercase letter.")
+        if not re.search(r'\d', value):
+            raise ValidationError("Password must contain at least one number.")
+        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', value):
+            raise ValidationError("Password must contain at least one special character.")
+        return value
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        user = User.objects.create_user(**validated_data, password=password)
+        return user
+```
+
+### Frontend: Custom Hook for Signup with Loading & Error States (React/TypeScript)
+
+```typescript
+// hooks/useFetchSignup.ts
+import { useState } from "react";
+import { fetchSignUp } from "../utils/fetchSignup";
+
+export function useFetchSignUp() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  async function signUp(data: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+  }) {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const register_data = await fetchSignUp(data);
+      setIsLoading(false);
+      return register_data;
+    } catch (error) {
+      setError(error as Error);
+      setIsLoading(false);
+      return null;
+    }
+  }
+
+  return { signUp, isLoading, error };
+}
+```
 
 ### 🌐 Deployment
 
@@ -333,6 +409,8 @@ heroku run python manage.py migrate
 - Run migrations after deployment
 
 ---
+
+
 
 ### 🎥 Video Demo
 [Watch the full demo video (5 minutes)](https://jam.dev/c/46699a62-d218-411e-a85b-deda120dfd56?startFrom=3.56)  
