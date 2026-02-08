@@ -30,6 +30,10 @@ Haraka is a comprehensive full-stack web application designed to provide a seaml
 - Backend: https://github.com/simplykevine/haraka-backend
 - Frontend: https://github.com/simplykevine/haraka-frontend
 
+**Google colab links**
+- Zeno embeddings: https://colab.research.google.com/drive/1jZ6Zi2BRc-3sbQ6Ea-AVWHM7OpKbG4FQ#scrollTo=rz84djzKx-vx
+- Data cleaning from different sources and chunking them: https://colab.research.google.com/drive/1CRbCLl2nPTYcU_hrp8JwSgF8THHMgEMm
+
 ## 🛠️ Tech Stack
 
 ### Backend
