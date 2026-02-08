@@ -185,32 +185,178 @@ haraka-frontend/
 └── .env         # Environment variables
 
 ## 📚 API Documentation
+- Access the interactive API documentation:
 
-### Authentication Endpoints
+- **Swagger UI:** http://localhost:8000/docs
+- **ReDoc:** http://localhost:8000/redoc
 
-#### `POST /api/users/register/`
-Register a new user  
-**Request Body:**
-```json
-{
-  "first_name": "string",
-  "last_name:"String",
-  "email": "string",
-  "password": "string",
-}
+| Endpoint         | Method      | Description           | Auth Required |
+|------------------|--------     |-------------------|---------------|
+| `/api/users/`    | GET/POST    | Get/add users     | ✅Yes         |
+| `/api/reviews/`  | GET/POST    | Get/post reviews  | ✅ Yes        |
+| `/api/agents/`   | GET/POST    | Get/post agents   | ✅ Yes        |
+| `/api/tools/`    | GET/POST    | Get/post tools    | ✅ Yes        |
 
 
+### Schema relationship
 
-#### `POST /api/users/register/`
-Register a new user  
-**Request Body:**
-```json
-{
-  "username": "string",
-  "email": "string",
-  "password": "string",
-  "password2": "string"
-}
-   
-   
-   
+                                    ┌─────────────────────────────────┐
+                                    │           USERS                 │
+                                    ├─────────────────────────────────┤
+                                    │ • user_id (PK)                  │
+                                    │ • first_name                    │
+                                    │ • last_name                     │
+                                    │ • role                          │
+                        ┌───────────│ • email                         │
+                        │           │ • created_at                    │
+                        │           │ • image                         │
+                        │           └─────────────────────────────────┘
+                        │                         │
+                        │                         │ 1:N
+                        │                         │
+                        │           ┌─────────────▼─────────────────┐
+                        │           │      CONVERSATION             │
+                        │           ├───────────────────────────────┤
+                        │           │ • conversation_id (PK)        │
+                        │           │ • user_id (FK)                │
+                        │           │ • title                       │
+                        │           │ • created_at                  │
+                        │           └───────────────────────────────┘
+                        │                         │
+                        │                         │ 1:N
+                        │                         │
+                        │           ┌─────────────▼─────────────────┐
+                        │           │           RUNS                │
+                        │           ├───────────────────────────────┤
+                        │           │ • run_id (PK)                 │
+                        │           │ • conversation_id (FK)        │
+                        │           │ • user_input                  │
+                        │           │ • final_output                │
+                        │           │ • status                      │
+                        │           │ • started_at                  │
+                        │           │ • completed_at                │
+                        │           └───────────────────────────────┘
+                        │                         │
+                        │                         │ 1:N
+                        │                         │
+        ┌───────────────┼───────────┬─────────────▼─────────────────┐
+        │               │           │          STEPS                │
+        │               │           ├───────────────────────────────┤
+        │               │           │ • step_id (PK)                │
+        │               │           │ • run_id (FK)                 │
+        │               │           │ • step_order                  │
+        │               │           │ • type                        │
+        │               │           │ • content (JSON)              │
+        │               │           │ • tool_id (FK)                │
+        │               │           │ • agent_id (FK)               │
+        │               │           │ • created_at                  │
+        │               │           └───────────┬───────────────────┘
+        │               │                       │           │
+        │               │                       │ N:1       | N:1
+        │               │                       │           │
+        │   ┌───────────▼───────────┐  ┌────────▼───────┐   │
+        │   │      REVIEWS          │  │     TOOLS      │   │
+        │   ├───────────────────────┤  ├────────────────┤   │
+        │   │ • review_id (PK)      │  │ • tool_id (PK) │   │
+        │   │ • review_text         │  │ • tool_name    │   │
+        │   │ • user_id (FK)        │  │ • tool_desc... │   │
+        │   │ • rating              │  │ • meta_data    │   │
+        │   │ • created_at          │  └────────────────┘   │
+        │   └───────────────────────┘                       │
+        │                                                   │
+        │                                      ┌────────────▼────────┐
+        │                                      │      AGENTS         │
+        │                                      ├─────────────────────┤
+        │                                      │ • agent_id (PK)     │
+        │                                      │ • agent_name        │
+        │                                      │ • description       │
+        │                                      └─────────────────────┘
+        │
+        │
+        │               ┌────────────────────────────┐
+        └───────────────│    RAG_EMBEDDINGS          │
+                        ├────────────────────────────┤
+                        │ • embedding_id (PK)        │
+                        │ • content                  │
+                        │ • source                   │
+                        │ • embedding_vector         │
+                        │ • created_at               │
+                        └────────────────────────────┘
+### 🎨 Design & Mockups
+
+#### Figma Mockups
+[Link to Figma design files](https://www.figma.com/proto/eaWZirlhPSEBe5guPj5PbV/zeno-design?node-id=1-2&p=f&t=KPgytJBC2ABEIheA-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A2&show-proto-sidebar=1)
+
+#### Screenshots
+
+- Landing page
+<img width="5120" height="3328" alt="zeno-chat" src="https://github.com/user-attachments/assets/74923871-21b1-4a2a-8a79-900e4b84da64" />
+
+- Sign up page
+<img width="1280" height="824" alt="Eco-Signup" src="https://github.com/user-attachments/assets/1ec3d62a-9f2b-48e1-873b-d18752d105ea" />
+
+- Login Page
+<img width="1280" height="824" alt="MacBook Air - 66" src="https://github.com/user-attachments/assets/29afeac8-a7b0-4d7c-b87b-aed1318be370" />
+
+
+### 🌐 Deployment
+
+#### Backend Deployment (Heroku/Render)
+**Prepare for production:**
+- Set `DEBUG=False` in settings
+- Configure `ALLOWED_HOSTS`
+- Set up static files handling
+
+**Deploy to Heroku:**
+```bash
+heroku create haraka-backend
+git push heroku main
+heroku run python manage.py migrate
+```
+#### Frontend Deployment (Vercel/Netlify)
+**Build the application:**
+```bash
+  npm run build
+```
+
+
+
+**Deploy to Vercel:**
+- Configure environment variables:
+
+### Database Migration
+- Use PostgreSQL in production
+- Configure database URL in environment variables
+- Run migrations after deployment
+
+---
+
+### 🎥 Video Demo
+[Watch the full demo video (5 minutes)](https://jam.dev/c/46699a62-d218-411e-a85b-deda120dfd56?startFrom=304.53)  
+
+The video demo covers:
+- User registration and login process
+- Navigation through the application
+- API endpoint testing
+- Responsive design demonstration
+- Authentication and authorization features
+
+
+### 🤝 Contributing
+Contributions are welcome! Please follow these steps:
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📧 Contact
+
+**Kevine Umutoni**  
+- Email: [k.umutoni@alustudent.com](mailto:k.umutoni@alustudent.com)  
+- GitHub: [@simplykevine](https://github.com/simplykevine)  
+- LinkedIn: [Your LinkedIn Profile](https://www.linkedin.com/in/umutoni-kevine-aa9a29278/)
