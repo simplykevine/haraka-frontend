@@ -332,7 +332,7 @@ heroku run python manage.py migrate
 ---
 
 ### 🎥 Video Demo
-[Watch the full demo video (5 minutes)](https://jam.dev/c/46699a62-d218-411e-a85b-deda120dfd56?startFrom=304.53)  
+[Watch the full demo video (5 minutes)](https://jam.dev/c/46699a62-d218-411e-a85b-deda120dfd56?startFrom=3.56)  
 
 The video demo covers:
 - User registration and login process
