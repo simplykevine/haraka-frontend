@@ -444,4 +444,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Kevine Umutoni**  
 - Email: [k.umutoni@alustudent.com](mailto:k.umutoni@alustudent.com)  
 - GitHub: [@simplykevine](https://github.com/simplykevine)  
-- LinkedIn: [Your LinkedIn Profile](https://www.linkedin.com/in/umutoni-kevine-aa9a29278/)
+- LinkedIn: [Kevine Umutoni](https://www.linkedin.com/in/umutoni-kevine-aa9a29278/)
