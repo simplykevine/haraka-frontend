@@ -72,9 +72,9 @@ export default function LoginPage() {
       setSuccess('Login successful!');
       setTimeout(() => {
         if (result.role === 'Admin') {
-          router.push('/dashboard');
-        } else if (result.role === 'User') {
           router.push('/chat');
+        } else if (result.role === 'User') {
+          router.push('/economist');
         }
       }, 1200);
     }

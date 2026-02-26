@@ -99,11 +99,13 @@ export interface ChatInputProps {
   onRunCreated?: (run: RunLike) => void;
 }
 
+// ✅ UPDATED: Added onSendSuggestion
 export type ChatMessagesProps = {
   runs: RunLike[];
   onRetry?: (run: RunLike) => void;
   userId?: number;
-  runLimitError?: boolean
+  runLimitError?: boolean;
+  onSendSuggestion?: (query: string) => void;
 };
 
 export type User = {
