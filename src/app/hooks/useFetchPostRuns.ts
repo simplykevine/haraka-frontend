@@ -1,4 +1,3 @@
-// hooks/useFetchPostRuns.ts
 import { useEffect, useRef, useState } from "react";
 import { createRun, fetchRunById } from "../utils/fetchPostRuns";
 import { RunLike, RunFile } from "../utils/types/chat";
@@ -6,23 +5,22 @@ import { RunLike, RunFile } from "../utils/types/chat";
 export function useRuns(
   conversationId: number | null,
   user?: { id: number; token: string },
-  onRunUpdate?: (updatedRun: RunLike) => void // 👈 Callback to sync with conversation
+  onRunUpdate?: (updatedRun: RunLike) => void
 ) {
   const [runs, setRuns] = useState<RunLike[]>([]);
   const pollingRef = useRef<Map<number, number>>(new Map());
+  const lastConversationId = useRef<number | null>(null);
 
   useEffect(() => {
-    const cleanupPolling = () => {
+    return () => {
       pollingRef.current.forEach(clearInterval);
       pollingRef.current.clear();
     };
-    return cleanupPolling;
   }, []);
 
-  // Clear runs when conversation changes
   useEffect(() => {
-    if (conversationId === null) {
-      setRuns([]);
+    if (conversationId !== lastConversationId.current) {
+      lastConversationId.current = conversationId;
       pollingRef.current.forEach(clearInterval);
       pollingRef.current.clear();
     }
@@ -53,7 +51,6 @@ export function useRuns(
     const optimisticFiles = filePreviews || files.map((file) => ({ file, previewUrl: "" }));
     const displayInput = files.length > 0 ? files.map((file) => file.name).join(", ") : userInput;
 
-    // Add optimistic run
     const optimisticRun: RunLike = {
       id: tempId,
       user_input: displayInput,
@@ -77,18 +74,15 @@ export function useRuns(
 
       const normalized = normalizeRun(incomingRun);
 
-      // Replace optimistic with real run
       setRuns((prevRuns) =>
         prevRuns.map((run) => {
           if (run.id === tempId) {
-            const updated = { ...normalized, files: run.files };
-            return updated;
+            return { ...normalized, files: run.files };
           }
           return run;
         })
       );
 
-      // Notify parent to update conversation list
       onRunUpdate?.(normalized);
 
       const runId = Number(incomingRun.id);
@@ -97,7 +91,6 @@ export function useRuns(
       return normalized;
     } catch (err) {
       const message = (err as { message?: string }).message || String(err);
-
       setRuns((prevRuns) =>
         prevRuns.map((run) => {
           if (run.id === tempId) {
@@ -106,7 +99,6 @@ export function useRuns(
           return run;
         })
       );
-
       throw err;
     }
   }
@@ -121,14 +113,12 @@ export function useRuns(
         setRuns((prevRuns) =>
           prevRuns.map((run) => {
             if (Number(run.id) === runId) {
-              const merged = { ...run, ...updated, files: run.files };
-              return merged;
+              return { ...run, ...updated, files: run.files };
             }
             return run;
           })
         );
 
-        // Notify parent
         onRunUpdate?.(updated);
 
         if (updated.status === "completed" || updated.status === "failed") {

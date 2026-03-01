@@ -12,8 +12,12 @@ import { Sparkles } from "lucide-react";
 
 // ✅ Pre-prompt suggestions
 const PRE_PROMPTS = [
-  "Forecast Ethiopian coffee price in the next 2 years",
   "Forecast the prices of maize in the next 2 months for Kenya",
+  "what if we subsidize maize production in Kenya",
+  "Simulate a 30% US tariff on Kenyan maize exports. Estimate impact on: exports, domestic prices, farmer income, trade balance, and market substitution.",
+  "Assume a geopolitical conflict disrupts fertilizer exports from the Middle East and increases global shipping costs by 20%. Model the impact on Kenya’s maize production, input costs, retail maize prices, and food inflation. Identify supply-chain vulnerabilities and estimate time lag effects.",
+  "If Tanzania increases maize production by 15% due to favorable rainfall, how would this affect Kenyan maize exports, cross-border trade flows, and domestic producer prices?",
+  "Simulate a temporary 6-month maize import ban from Tanzania or Uganda. Estimate impact on domestic supply gap, price volatility, and food security indicators. Would strategic reserves absorb the shock?",
 ];
 
 export default function ChatMessages({
@@ -159,7 +163,7 @@ export default function ChatMessages({
           </div>
           <div style={{ marginTop: "20px" }}>
             <div style={{ fontWeight: "bold", color: "#9FF8F8", marginBottom: "8px" }}>
-              You:
+              economist:
             </div>
             <div style={{ marginBottom: "15px", whiteSpace: "pre-wrap" }}>
               {runToDownload.user_input}

@@ -11,8 +11,12 @@ import { Hand, Sparkles } from "lucide-react";
 import { useRouter } from 'next/navigation';
 
 const PRE_PROMPTS = [
-  "Forecast Ethiopian coffee price in the next 2 years",
   "Forecast the prices of maize in the next 2 months for Kenya",
+  "what if we subsidize maize production in Kenya",
+  "Simulate a 30% US tariff on Kenyan maize exports. Estimate impact on: exports, domestic prices, farmer income, trade balance, and market substitution.",
+  "Assume a geopolitical conflict disrupts fertilizer exports from the Middle East and increases global shipping costs by 20%. Model the impact on Kenya’s maize production, input costs, retail maize prices, and food inflation. Identify supply-chain vulnerabilities and estimate time lag effects.",
+  "If Tanzania increases maize production by 15% due to favorable rainfall, how would this affect Kenyan maize exports, cross-border trade flows, and domestic producer prices?",
+  "Simulate a temporary 6-month maize import ban from Tanzania or Uganda. Estimate impact on domestic supply gap, price volatility, and food security indicators. Would strategic reserves absorb the shock?",
 ];
 
 const getMimeType = (fileType: string): string => {
@@ -34,23 +38,23 @@ export default function ChatPage() {
   const [role, setRole] = useState<string | undefined>(undefined);
   const [showGreeting, setShowGreeting] = useState(true);
   const [runLimitError, setRunLimitError] = useState(false);
+  const [conversationError, setConversationError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const storedToken = localStorage.getItem('token');
     const id = localStorage.getItem('id');
-    const role = localStorage.getItem('role');
-    if (token && id && (role === 'User' || role === 'Admin')) {
-      setToken(token);
+    const storedRole = localStorage.getItem('role');
+    if (storedToken && id && (storedRole === 'User' || storedRole === 'Admin')) {
+      setToken(storedToken);
       setUserId(parseInt(id, 10));
-      setRole(role);
+      setRole(storedRole);
     } else {
       router.push('/signin');
     }
   }, [router]);
 
   const user = token && userId ? { id: userId, token } : undefined;
-  const [conversationError, setConversationError] = useState<string | null>(null);
 
   const {
     conversations,
@@ -84,8 +88,6 @@ export default function ChatPage() {
     handleRunUpdate
   );
 
-  const hasInitializedRuns = useRef(false);
-
   useEffect(() => {
     if (runs.length > 0) {
       setShowGreeting(false);
@@ -100,10 +102,10 @@ export default function ChatPage() {
     }
 
     const selectedConversation = conversations.find(
-      (conversation) => conversation.conversation_id === selectedConversationId
+      (c) => c.conversation_id === selectedConversationId
     );
 
-    if (selectedConversation && selectedConversation.runs) {
+    if (selectedConversation) {
       const mappedRuns = (selectedConversation.runs || [])
         .sort((a, b) => new Date(a.started_at).getTime() - new Date(b.started_at).getTime())
         .map(run => {
@@ -122,7 +124,7 @@ export default function ChatPage() {
             output_artifacts: run.output_artifacts || [],
             status: run.status?.toLowerCase() || "completed",
             started_at: run.started_at,
-            files: files,
+            files,
             _optimistic: false,
             error: run.status?.toLowerCase() === 'failed' && run.final_output
               ? run.final_output
@@ -132,12 +134,9 @@ export default function ChatPage() {
 
       setRuns(mappedRuns);
       setShowGreeting(mappedRuns.length === 0);
-      hasInitializedRuns.current = true;
     }
   }, [selectedConversationId, conversations, setRuns]);
 
-  // ✅ FIXED: handleSendMessage defined BEFORE handleSendSuggestion
-  // and BEFORE any early return — so hook order is always consistent
   const handleSendMessage = useCallback(async ({
     conversationId,
     userInput,
@@ -173,7 +172,7 @@ export default function ChatPage() {
         }
 
         finalConversationId = String(convData.conversation_id);
-        setConversations((prev) => [convData, ...prev]);
+        setConversations((prev) => [{ ...convData, runs: [] }, ...prev]);
         setSelectedConversationId(convData.conversation_id);
         setRuns([]);
       }
@@ -182,11 +181,9 @@ export default function ChatPage() {
 
       const result = await sendMessage({ userInput, files, filePreviews });
 
-      await fetchConvos();
-
-      if (!conversationId) {
+      if (!conversationId && finalConversationId) {
         const cleanInput = userInput.trim();
-        if (cleanInput && finalConversationId) {
+        if (cleanInput) {
           const words = cleanInput.split(/\s+/);
           const title = words.length > 5
             ? words.slice(0, 5).join(' ') + '...'
@@ -199,6 +196,11 @@ export default function ChatPage() {
             },
             body: JSON.stringify({ title }),
           });
+          setConversations(prev => prev.map(c =>
+            c.conversation_id === Number(finalConversationId)
+              ? { ...c, title }
+              : c
+          ));
         }
       }
 
@@ -221,9 +223,8 @@ export default function ChatPage() {
       setRunLimitError(isRunLimit);
       throw error instanceof Error ? error : new Error(errorMsg);
     }
-  }, [token, userId, sendMessage, fetchConvos, setConversations, setSelectedConversationId, setRuns]);
+  }, [token, userId, sendMessage, setConversations, setSelectedConversationId, setRuns]);
 
-  // ✅ FIXED: Now safely after handleSendMessage and before early return
   const handleSendSuggestion = useCallback(async (prompt: string) => {
     await handleSendMessage({
       conversationId: selectedConversationId !== null
@@ -233,7 +234,6 @@ export default function ChatPage() {
     });
   }, [handleSendMessage, selectedConversationId]);
 
-  // ✅ ALL hooks above — early return is safe here
   if (!user || (role !== 'User' && role !== 'Admin')) {
     return (
       <div className="min-h-screen w-full flex items-center justify-center px-4">
@@ -261,17 +261,17 @@ export default function ChatPage() {
         data &&
         typeof data === "object" &&
         "error" in data &&
-        typeof data.error === "string"
+        typeof (data as any).error === "string"
       ) {
-        errorMsg = data.error.includes("Daily conversation limit")
+        errorMsg = (data as any).error.includes("Daily conversation limit")
           ? "You have run out of conversations for today. Try again tomorrow."
-          : data.error;
+          : (data as any).error;
       }
       setConversationError(errorMsg);
       return;
     }
 
-    setConversations((prev) => [data!, ...prev]);
+    setConversations((prev) => [{ ...data!, runs: [] }, ...prev]);
     setSelectedConversationId(data!.conversation_id);
     setRuns([]);
     setShowGreeting(true);
@@ -286,7 +286,11 @@ export default function ChatPage() {
       },
       body: JSON.stringify({ title }),
     });
-    if (res.ok) await fetchConvos();
+    if (res.ok) {
+      setConversations(prev => prev.map(c =>
+        c.conversation_id === id ? { ...c, title } : c
+      ));
+    }
   }
 
   async function handleDeleteConversation(id: number) {
@@ -301,15 +305,12 @@ export default function ChatPage() {
         if (updated.length > 0) {
           setSelectedConversationId(updated[0].conversation_id);
           clearRuns();
-          hasInitializedRuns.current = false;
         } else {
           setSelectedConversationId(null);
           setRuns([]);
           setShowGreeting(true);
-          hasInitializedRuns.current = false;
         }
       }
-      await fetchConvos();
     }
   }
 
@@ -335,8 +336,6 @@ export default function ChatPage() {
 
           {showGreeting ? (
             <div className="flex flex-col items-center justify-center h-full gap-10">
-
-              {/* Greeting */}
               <div className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-6">
                   <h1 className="text-5xl font-bold text-white">Hello there!</h1>
@@ -347,9 +346,8 @@ export default function ChatPage() {
                 </p>
               </div>
 
-              {/* ✅ Pre-prompt suggestion chips */}
-              <div className="flex flex-col gap-3 w-full max-w-lg">
-                <p className="text-center text-gray-400 text-sm mb-1 flex items-center justify-center gap-2">
+              <div className="flex flex-col gap-3 w-full max-w-3xl">
+                <p className="text-center text-gray-100 text-lg mb-1 flex items-center justify-center gap-2">
                   <Sparkles size={14} className="text-cyan-400" />
                   Try one of these suggestions
                 </p>
@@ -363,14 +361,13 @@ export default function ChatPage() {
                       <div className="mt-0.5 w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
                         <Sparkles className="text-cyan-400" size={12} />
                       </div>
-                      <span className="text-gray-300 text-sm group-hover:text-white transition-colors">
+                      <span className="text-gray-300 text-lg group-hover:text-white transition-colors">
                         {prompt}
                       </span>
                     </div>
                   </button>
                 ))}
               </div>
-
             </div>
           ) : (
             <ChatMessages

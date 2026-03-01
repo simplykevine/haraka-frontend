@@ -62,24 +62,24 @@ export default function ImportCollisionRisk() {
 
       {/* Timeline */}
       <div className="space-y-2">
-        <p className="text-gray-400 text-xs uppercase tracking-widest">Timeline (Feb – Jul 2026)</p>
+        <p className="text-gray-200 text-xs uppercase tracking-widest">Timeline (Feb – Jul 2026)</p>
         <div className="relative h-8 bg-gray-800 rounded-full overflow-visible">
           {/* Harvest window */}
           <div
             className="absolute top-0 h-full bg-green-600/50 border border-green-500 rounded"
             style={{ left: `${harvestLeft}%`, width: `${harvestWidth}%` }}
           >
-            <span className="absolute -top-5 left-1 text-green-400 text-[10px] whitespace-nowrap">🌾 Harvest</span>
+            <span className="absolute -top-5 left-1 text-green-400 text-[18px] whitespace-nowrap">🌾 Harvest</span>
           </div>
           {/* Import arrival */}
           <div
             className="absolute top-0 h-full w-0.5 bg-red-500"
             style={{ left: `${arrivalLeft}%` }}
           >
-            <span className="absolute -top-5 -left-4 text-red-400 text-[10px] whitespace-nowrap">🚢 Arrival</span>
+            <span className="absolute -top-5 -left-4 text-red-400 text-[18px] whitespace-nowrap">🚢 Arrival</span>
           </div>
         </div>
-        <div className="flex justify-between text-gray-500 text-[10px]">
+        <div className="flex justify-between text-gray-500 text-[15px]">
           <span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span>
         </div>
       </div>
@@ -87,11 +87,11 @@ export default function ImportCollisionRisk() {
       {/* Details */}
       <div className="grid grid-cols-2 gap-3 text-sm">
         <div className="bg-[#0d1f38] rounded-lg p-3 border border-teal-400/20">
-          <p className="text-gray-400 text-xs">Harvest Window</p>
+          <p className="text-gray-100 text-lg">Harvest Window</p>
           <p className="text-white font-medium">Mar 15 – May 30, 2026</p>
         </div>
         <div className="bg-[#0d1f38] rounded-lg p-3 border border-teal-400/20">
-          <p className="text-gray-400 text-xs">Expected Arrival</p>
+          <p className="text-gray-100 text-lg">Expected Arrival</p>
           <p className="text-red-300 font-medium">Apr 10, 2026</p>
         </div>
       </div>

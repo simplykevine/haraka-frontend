@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { Conversation } from "../utils/types/runs";
 import { getConversationsWithRuns } from "../utils/fetchConversationWithRuns";
 
@@ -7,6 +7,7 @@ export function useConversationsWithRuns(token?: string) {
   const [selectedConversationId, setSelectedConversationId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const hasAutoSelected = useRef(false);
 
   const fetchConvos = useCallback(async () => {
     if (!token) return;
@@ -15,15 +16,16 @@ export function useConversationsWithRuns(token?: string) {
     try {
       const data = await getConversationsWithRuns(token);
       setConversations(data);
-      if (data.length > 0 && selectedConversationId === null) {
+      if (data.length > 0 && !hasAutoSelected.current) {
         setSelectedConversationId(data[0].conversation_id);
+        hasAutoSelected.current = true;
       }
     } catch (err) {
       setError((err as Error).message);
     } finally {
       setLoading(false);
     }
-  }, [token, selectedConversationId]);
+  }, [token]);
 
   useEffect(() => {
     fetchConvos();
