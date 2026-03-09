@@ -28,6 +28,7 @@ export function useConversationsWithRuns(token?: string) {
   }, [token]);
 
   useEffect(() => {
+    hasAutoSelected.current = false;
     fetchConvos();
   }, [fetchConvos]);
 

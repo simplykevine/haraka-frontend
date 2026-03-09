@@ -14,9 +14,10 @@ const PRE_PROMPTS = [
   "Forecast the prices of maize in the next 2 months for Kenya",
   "what if we subsidize maize production in Kenya",
   "Simulate a 30% US tariff on Kenyan maize exports. Estimate impact on: exports, domestic prices, farmer income, trade balance, and market substitution.",
-  "Assume a geopolitical conflict disrupts fertilizer exports from the Middle East and increases global shipping costs by 20%. Model the impact on Kenya’s maize production, input costs, retail maize prices, and food inflation. Identify supply-chain vulnerabilities and estimate time lag effects.",
+  "Assume a geopolitical conflict disrupts fertilizer exports from the Middle East and increases global shipping costs by 20%. Model the impact on Kenya's maize production, input costs, retail maize prices, and food inflation. Identify supply-chain vulnerabilities and estimate time lag effects.",
   "If Tanzania increases maize production by 15% due to favorable rainfall, how would this affect Kenyan maize exports, cross-border trade flows, and domestic producer prices?",
   "Simulate a temporary 6-month maize import ban from Tanzania or Uganda. Estimate impact on domestic supply gap, price volatility, and food security indicators. Would strategic reserves absorb the shock?",
+  "what will the current war hapening between Iran, Israel and USA affect Kenya's economy in terms of exports and exports currentlyterms of exports and imports",
 ];
 
 const getMimeType = (fileType: string): string => {
@@ -40,6 +41,7 @@ export default function ChatPage() {
   const [runLimitError, setRunLimitError] = useState(false);
   const [conversationError, setConversationError] = useState<string | null>(null);
   const router = useRouter();
+  const justCreatedConversationRef = useRef(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
@@ -101,11 +103,19 @@ export default function ChatPage() {
       return;
     }
 
+    if (justCreatedConversationRef.current) {
+      justCreatedConversationRef.current = false;
+      return;
+    }
+
     const selectedConversation = conversations.find(
       (c) => c.conversation_id === selectedConversationId
     );
 
     if (selectedConversation) {
+      const hasOptimisticRuns = runs.some(r => r._optimistic);
+      if (hasOptimisticRuns) return;
+
       const mappedRuns = (selectedConversation.runs || [])
         .sort((a, b) => new Date(a.started_at).getTime() - new Date(b.started_at).getTime())
         .map(run => {
@@ -135,6 +145,7 @@ export default function ChatPage() {
       setRuns(mappedRuns);
       setShowGreeting(mappedRuns.length === 0);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedConversationId, conversations, setRuns]);
 
   const handleSendMessage = useCallback(async ({
@@ -172,6 +183,7 @@ export default function ChatPage() {
         }
 
         finalConversationId = String(convData.conversation_id);
+        justCreatedConversationRef.current = true;
         setConversations((prev) => [{ ...convData, runs: [] }, ...prev]);
         setSelectedConversationId(convData.conversation_id);
         setRuns([]);
@@ -311,6 +323,7 @@ export default function ChatPage() {
           setShowGreeting(true);
         }
       }
+      await fetchConvos();
     }
   }
 
