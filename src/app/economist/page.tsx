@@ -6,7 +6,6 @@ import PolicyHeatMap from './components/PolicyHeatMap';
 import RegionalArbitrageMap from './components/RegionalArbitrageMap';
 import LogisticsComparison from './components/LogisticsComparison';
 import RainfallShock from './components/RainfallShock';
-import EconomistChatbot from './components/EconomistChatbot';
 
 export default function EconomistPage() {
   const router = useRouter();
@@ -106,7 +105,6 @@ export default function EconomistPage() {
 
       <RainfallShock />
 
-      <EconomistChatbot />
     </div>
   );
 }
