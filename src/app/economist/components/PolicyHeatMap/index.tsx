@@ -66,7 +66,6 @@ export default function PolicyHeatMap() {
         ⚠️ April: Collision detected — imports landing during supply trough. Recommend policy review.
       </div>
 
-      {/* Legend */}
       <div className="flex gap-4 text-xs">
         <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-green-700 inline-block" /> Stable</span>
         <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-yellow-700 inline-block" /> Tightening</span>

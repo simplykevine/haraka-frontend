@@ -61,7 +61,6 @@ export default function RainfallShock() {
         </div>
       </div>
 
-      {/* Visual gap bar */}
       <div className="space-y-1">
         <div className="flex justify-between text-xs text-gray-400">
           <span>Supply</span>

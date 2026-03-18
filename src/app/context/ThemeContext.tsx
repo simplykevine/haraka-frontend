@@ -50,8 +50,6 @@ export function useTheme() {
   }
   return context;
 }
-
-// Safe hook that returns default if not in provider
 export function useThemeSafe() {
   const context = useContext(ThemeContext);
   return context ?? { theme: 'dark' as const, toggleTheme: () => {} };

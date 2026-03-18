@@ -20,7 +20,7 @@ const SUGGESTIONS = [
   { label: 'Compare logistics: Mombasa port vs Busia border',     panel: 'logistics' },
 ];
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+const API_URL = process.env.BASE_URL 
 
 export default function EconomistChatbot() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -43,7 +43,6 @@ export default function EconomistChatbot() {
     setInput('');
     setLoading(true);
 
-    // Simulate progress messages like the existing chat
     setProgressMessages(['Fetching dashboard data...']);
     setTimeout(() => setProgressMessages(prev => [...prev, 'Running economic analysis...']), 800);
     setTimeout(() => setProgressMessages(prev => [...prev, 'Generating insights...']), 1600);
@@ -89,7 +88,6 @@ export default function EconomistChatbot() {
   return (
     <div className="rounded-xl border border-teal-400/30 bg-[#091326] flex flex-col overflow-hidden">
 
-      {/* Header — matches existing chat style */}
       <div className="flex items-center gap-3 px-6 py-4 border-b border-white/10">
         <Image
           src="/images/zeno-logo-icon.png"
@@ -101,7 +99,6 @@ export default function EconomistChatbot() {
           <h2 className="text-white font-semibold">Dr. Zeno — Economist AI</h2>
           <p className="text-gray-400 text-xs">Ask questions about any dashboard panel above</p>
         </div>
-        {/* Panel context selector */}
         <select
           value={activePanel}
           onChange={e => setActivePanel(e.target.value)}
@@ -116,7 +113,6 @@ export default function EconomistChatbot() {
         </select>
       </div>
 
-      {/* Suggestion chips */}
       <div className="flex gap-2 flex-wrap px-6 py-3 border-b border-white/5 bg-[#0a1628]">
         {SUGGESTIONS.map((s) => (
           <button
@@ -130,7 +126,6 @@ export default function EconomistChatbot() {
         ))}
       </div>
 
-      {/* Messages — uses your existing UserMessage + AgentMessage */}
       <div
         className="flex-1 overflow-y-auto px-6 py-4 space-y-4 bg-[#0B182F]"
         style={{ minHeight: '300px', maxHeight: '480px' }}
@@ -155,7 +150,6 @@ export default function EconomistChatbot() {
           if (m.role === 'user') {
             return (
               <div key={i}>
-                {/* Panel badge above user message */}
                 {m.panel && (
                   <div className="flex justify-end mb-1">
                     <span className="text-[10px] text-teal-400 uppercase tracking-widest font-semibold">
@@ -163,20 +157,17 @@ export default function EconomistChatbot() {
                     </span>
                   </div>
                 )}
-                {/* Your existing UserMessage component */}
                 <UserMessage text={m.content} files={[]} />
               </div>
             );
           }
           return (
             <div key={i}>
-              {/* Your existing AgentMessage component */}
               <AgentMessage text={m.content} />
             </div>
           );
         })}
 
-        {/* Loading state — uses your existing AgentMessage loading UI */}
         {loading && (
           <AgentMessage
             loading={true}
@@ -187,7 +178,6 @@ export default function EconomistChatbot() {
         <div ref={bottomRef} />
       </div>
 
-      {/* Input — simple version for the economist page (no auth/file needed) */}
       <div className="px-6 py-4 border-t border-white/10 bg-[#091326]">
         <form
           onSubmit={handleSubmit}

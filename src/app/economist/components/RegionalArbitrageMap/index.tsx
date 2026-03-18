@@ -73,7 +73,6 @@ export default function RegionalArbitrageMap() {
         </table>
       </div>
 
-      {/* Price Bubbles */}
       <div className="flex gap-4 mt-2 flex-wrap">
         {sources.map((s) => (
           <div key={s.name} className="flex flex-col items-center gap-1">

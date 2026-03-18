@@ -4,7 +4,6 @@ import { BarChart, LineChart, PieChart } from "@mui/x-charts";
 import { Typography } from "@mui/material";
 import type { TableData, ChartData, ArtifactRendererProps } from "@/app/utils/types/chat";
 
-// ✅ Extended chart data type to handle backend variations
 type ExtendedChartData = ChartData & {
   supply?: number[];
   demand?: number[];
@@ -46,7 +45,6 @@ function getYAxisLabel(title?: string): string {
 }
 
 function ChartRenderer({ data }: { data: ExtendedChartData }) {
-  // ✅ Handle supply/demand chart structure
   if (data?.supply && data?.demand && data?.x) {
     return (
       <div className="rounded-1xl shadow-lg max-w-180 w-full overflow-hidden bg-white border border-gray-100">
@@ -92,7 +90,6 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
     );
   }
 
-  // ✅ Handle regions chart structure
   if (data?.regions && Array.isArray(data.regions)) {
     const xValues: string[] = data.regions.map((r: { name: string; price: number; change_pct?: number }) => r.name);
     const yValues: number[] = data.regions.map((r: { name: string; price: number; change_pct?: number }) => r.price);
@@ -136,7 +133,6 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
     );
   }
 
-  // ✅ Handle standard x/y chart structure
   if (!data?.x || !data?.y || !Array.isArray(data.x) || !Array.isArray(data.y) || data.x.length === 0 || data.y.length === 0) {
     return (
       <div className="p-4 rounded-lg bg-red-50 border border-red-200 shadow">
@@ -241,7 +237,6 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
 }
 
 function TableRenderer({ data }: { data: TableData }) {
-  // ✅ Handle x/y format
   if (data?.x && data?.y && Array.isArray(data.x) && Array.isArray(data.y)) {
     const minLength: number = Math.min(data.x.length, data.y.length);
     return (
@@ -268,8 +263,6 @@ function TableRenderer({ data }: { data: TableData }) {
       </div>
     );
   }
-
-  // ✅ Handle columns/rows format
   if (!data?.columns || !data?.rows || data.columns.length === 0) {
     return (
       <div className="p-4 rounded-lg bg-yellow-50 border border-yellow-200">

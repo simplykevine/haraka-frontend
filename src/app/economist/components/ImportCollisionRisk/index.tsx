@@ -43,7 +43,6 @@ export default function ImportCollisionRisk() {
         </div>
       )}
 
-      {/* Gauge */}
       <div className={`rounded-xl p-5 border ${style.border} ${style.bg} flex flex-col items-center gap-2`}>
         <p className="text-gray-400 text-xs uppercase tracking-widest">Collision Risk Level</p>
         <div className="flex gap-3 items-center">
@@ -60,18 +59,15 @@ export default function ImportCollisionRisk() {
         </div>
       </div>
 
-      {/* Timeline */}
       <div className="space-y-2">
         <p className="text-gray-200 text-xs uppercase tracking-widest">Timeline (Feb – Jul 2026)</p>
         <div className="relative h-8 bg-gray-800 rounded-full overflow-visible">
-          {/* Harvest window */}
           <div
             className="absolute top-0 h-full bg-green-600/50 border border-green-500 rounded"
             style={{ left: `${harvestLeft}%`, width: `${harvestWidth}%` }}
           >
             <span className="absolute -top-5 left-1 text-green-400 text-[18px] whitespace-nowrap">🌾 Harvest</span>
           </div>
-          {/* Import arrival */}
           <div
             className="absolute top-0 h-full w-0.5 bg-red-500"
             style={{ left: `${arrivalLeft}%` }}
@@ -84,7 +80,6 @@ export default function ImportCollisionRisk() {
         </div>
       </div>
 
-      {/* Details */}
       <div className="grid grid-cols-2 gap-3 text-sm">
         <div className="bg-[#0d1f38] rounded-lg p-3 border border-teal-400/20">
           <p className="text-gray-100 text-lg">Harvest Window</p>
