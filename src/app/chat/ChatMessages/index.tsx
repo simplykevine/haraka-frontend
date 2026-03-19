@@ -204,7 +204,7 @@ export default function ChatMessages({
     const patterns = [
       /Kenya.*high-altitude.*specialty-grade/,
       /Nairobi Coffee Exchange/,
-      /December 2025.*January 2026/,
+      /April 2026.*May 2026/,
       /US\$395 per 50 kg/,
     ];
     return patterns.some((p) => p.test(text));

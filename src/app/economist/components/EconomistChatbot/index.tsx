@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { useTheme } from '@/app/context/ThemeContext';
+import { useThemeSafe } from '@/app/context/ThemeContext'; // ✅ Changed to useThemeSafe
 import UserMessage from '@/app/chat/ChatMessages/components/UserMessageCard';
 import AgentMessage from '@/app/chat/ChatMessages/components/AgentMessageCard';
 
@@ -21,10 +21,10 @@ const SUGGESTIONS = [
   { label: 'Compare logistics: Mombasa port vs Busia border',     panel: 'logistics' },
 ];
 
-const API_URL = process.env.BASE_URL
+const API_URL = 'https://zeno-tool-de589388395a.herokuapp.com';
 
 export default function EconomistChatbot() {
-  const { theme } = useTheme();
+  const { theme } = useThemeSafe(); // ✅ Changed to useThemeSafe
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -87,12 +87,12 @@ export default function EconomistChatbot() {
     sendMessage(input, activePanel);
   };
 
+  // Theme-aware styles
   const containerBg = theme === 'light' ? 'bg-white' : 'bg-[#091326]';
   const headerBg = theme === 'light' ? 'bg-blue-50' : 'bg-[#0a1628]';
   const borderColor = theme === 'light' ? 'border-blue-200' : 'border-teal-400/30';
   const textPrimary = theme === 'light' ? 'text-gray-900' : 'text-white';
   const textSecondary = theme === 'light' ? 'text-gray-600' : 'text-gray-400';
-  const textTertiary = theme === 'light' ? 'text-gray-500' : 'text-gray-500';
   const selectBg = theme === 'light' ? 'bg-blue-50' : 'bg-[#0d1f38]';
   const selectText = theme === 'light' ? 'text-gray-700' : 'text-gray-300';
   const selectBorder = theme === 'light' ? 'border-blue-300' : 'border-teal-400/30';
@@ -106,8 +106,8 @@ export default function EconomistChatbot() {
   const inputBorder = theme === 'light' ? 'border-blue-300' : 'border-cyan-400/50';
   const inputText = theme === 'light' ? 'text-gray-900' : 'text-white';
   const inputPlaceholder = theme === 'light' ? 'placeholder-blue-500' : 'placeholder-cyan-300';
-  const buttonBg = theme === 'light' ? 'bg-blue-500' : 'bg-cyan-500';
-  const buttonHover = theme === 'light' ? 'hover:bg-blue-600' : 'hover:bg-cyan-400';
+  const buttonBg = theme === 'light' ? 'bg-blue-600' : 'bg-cyan-500';
+  const buttonHover = theme === 'light' ? 'hover:bg-blue-700' : 'hover:bg-cyan-400';
   const panelBadgeText = theme === 'light' ? 'text-blue-600' : 'text-teal-400';
   const emptyStateText = theme === 'light' ? 'text-gray-500' : 'text-gray-500';
   const emptyStateSmallText = theme === 'light' ? 'text-gray-400' : 'text-gray-600';
@@ -115,6 +115,7 @@ export default function EconomistChatbot() {
   return (
     <div className={`rounded-xl border ${borderColor} ${containerBg} flex flex-col overflow-hidden`}>
 
+      {/* Header */}
       <div className={`flex items-center gap-3 px-6 py-4 border-b ${messageAreaBorder} ${headerBg}`}>
         <Image
           src="/images/zeno-logo-icon.png"
@@ -127,6 +128,7 @@ export default function EconomistChatbot() {
           <p className={`${textSecondary} text-xs`}>Ask questions about any dashboard panel above</p>
         </div>
         
+        {/* Panel Selector */}
         <select
           value={activePanel}
           onChange={e => setActivePanel(e.target.value)}
@@ -141,6 +143,7 @@ export default function EconomistChatbot() {
         </select>
       </div>
 
+      {/* Suggestions */}
       <div className={`flex gap-2 flex-wrap px-6 py-3 border-b ${messageAreaBorder} ${headerBg}`}>
         {SUGGESTIONS.map((s) => (
           <button
@@ -154,6 +157,7 @@ export default function EconomistChatbot() {
         ))}
       </div>
 
+      {/* Messages Area */}
       <div
         className={`flex-1 overflow-y-auto px-6 py-4 space-y-4 ${messageAreaBg}`}
         style={{ minHeight: '300px', maxHeight: '480px' }}
@@ -178,6 +182,7 @@ export default function EconomistChatbot() {
           if (m.role === 'user') {
             return (
               <div key={i}>
+                {/* Panel badge above user message */}
                 {m.panel && (
                   <div className="flex justify-end mb-1">
                     <span className={`text-[10px] ${panelBadgeText} uppercase tracking-widest font-semibold`}>
@@ -185,17 +190,20 @@ export default function EconomistChatbot() {
                     </span>
                   </div>
                 )}
+                {/* User Message */}
                 <UserMessage text={m.content} files={[]} />
               </div>
             );
           }
           return (
             <div key={i}>
+              {/* Agent Message */}
               <AgentMessage text={m.content} />
             </div>
           );
         })}
 
+        {/* Loading state */}
         {loading && (
           <AgentMessage
             loading={true}
@@ -206,6 +214,7 @@ export default function EconomistChatbot() {
         <div ref={bottomRef} />
       </div>
 
+      {/* Input Section */}
       <div className={`px-6 py-4 border-t ${messageAreaBorder} ${containerBg}`}>
         <form
           onSubmit={handleSubmit}
