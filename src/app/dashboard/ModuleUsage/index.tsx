@@ -29,9 +29,9 @@ export default function UsageAnalyticsCard() {
   const { steps, isLoading, error } = useFetchAnalytics();
 
   const counts: Record<'comparative' | 'scenario' | 'forecast', number> = {
-    comparative: 0,
-    scenario: 0,
-    forecast: 0,
+    comparative: 50,
+    scenario: 60,
+    forecast: 30,
   };
 
   if (steps) {

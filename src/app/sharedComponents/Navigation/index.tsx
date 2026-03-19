@@ -11,7 +11,6 @@ import Image from 'next/image';
 
 const navItems = [
   { Icon: LuLayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-  { Icon: TbActivityHeartbeat, label: 'System Health', path: '/system_health' },
   { Icon: BsBarChart, label: 'Usage Analytics', path: '/analytics' },
   { Icon: AiOutlineComment, label: 'User Feedback', path: '/user_reviews' },
   { Icon: HiOutlineUsers, label: 'User Management', path: '/user_management' },

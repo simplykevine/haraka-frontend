@@ -7,15 +7,16 @@ import PolicyHeatMap from './components/PolicyHeatMap';
 import RegionalArbitrageMap from './components/RegionalArbitrageMap';
 import LogisticsComparison from './components/LogisticsComparison';
 import RainfallShock from './components/RainfallShock';
-
 export default function EconomistPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#091326] text-white px-6 py-8 space-y-8">
-      <div className="flex justify-end">
+    <div className="min-h-screen bg-[#091326] text-white px-1 py-8 space-y-2">
+      <div className="flex justify-end gap-5">
         <ThemeToggle />
+        
       </div>
+ 
 
       <div className="border-b border-teal-400/20 pb-6">
         <h1 className="text-3xl font-extrabold text-white tracking-tight">
