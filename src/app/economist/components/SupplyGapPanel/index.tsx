@@ -70,7 +70,7 @@ export default function SupplyGapPanel() {
     <div className="rounded-xl p-6 border border-teal-400/30 bg-[#091326] space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-white text-lg font-semibold">📈 Projected Supply Gap</h2>
-        <span className={`text-xs font-bold px-3 py-1 rounded-full border ${status.color} ${status.bg} ${status.border}`}>
+        <span className={`text-lg font-bold px-3 py-1 rounded-full border ${status.color} ${status.bg} ${status.border}`}>
           {status.label}
         </span>
       </div>
@@ -85,11 +85,11 @@ export default function SupplyGapPanel() {
 
       <div className="grid grid-cols-2 gap-4 mt-2">
         <div className="rounded-lg border border-teal-400/30 p-4 bg-[#0d1f38]">
-          <p className="text-gray-400 text-xs mb-1">Total Supply Gap</p>
-          <p className="text-white text-2xl font-bold">{totalGap.toLocaleString()} <span className="text-sm text-gray-400">tons</span></p>
+          <p className="text-gray-400 text-lg mb-1">Total Supply Gap</p>
+          <p className="text-white text-2xl font-bold">{totalGap.toLocaleString()} <span className="text-lg text-gray-400">tons</span></p>
         </div>
         <div className="rounded-lg border border-teal-400/30 p-4 bg-[#0d1f38]">
-          <p className="text-gray-400 text-xs mb-1">Max Monthly Deficit</p>
+          <p className="text-gray-400 text-lg mb-1">Max Monthly Deficit</p>
           <p className={`text-2xl font-bold ${status.color}`}>{maxDeficitPct.toFixed(1)}%</p>
         </div>
       </div>

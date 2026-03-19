@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import useFetchAdmins from '../hooks/useFetchAdmin';
+import { useThemeSafe } from '../context/ThemeContext';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineArrowLeft, AiOutlineCamera } from 'react-icons/ai';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -50,6 +51,7 @@ interface ApiError {
 }
 
 const ProfilePage = () => {
+  const { theme } = useThemeSafe();
   const { user, loading, error, updateAdmin, refetch } = useFetchAdmins();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<FormData>({});
@@ -58,6 +60,34 @@ const ProfilePage = () => {
   const [status, setStatus] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const router = useRouter();
+  const bgColor = theme === 'light' ? 'bg-gray-50' : 'bg-transparent';
+  const textPrimary = theme === 'light' ? 'text-gray-900' : 'text-white';
+  const textSecondary = theme === 'light' ? 'text-gray-600' : 'text-zinc-100';
+  const headerBg = theme === 'light' ? 'bg-white' : '#0F243D';
+  const borderColor = theme === 'light' ? 'border-gray-300' : 'border-white';
+  const backButtonBg = theme === 'light' ? 'border-blue-400 text-blue-600 hover:bg-blue-100 hover:text-blue-700' : 'border-cyan-300 text-cyan-300 hover:bg-cyan-200 hover:text-[#0F243D]';
+  const backButtonIcon = theme === 'light' ? 'text-blue-400 hover:text-blue-700' : 'text-cyan-300 hover:text-[#0F243D]';
+  const cardBg = theme === 'light' ? 'bg-white' : '#0F243D';
+  const cardBorder = theme === 'light' ? 'border-gray-300' : 'border-none';
+  const labelText = theme === 'light' ? 'text-blue-600' : 'text-cyan-300';
+  const inputBg = theme === 'light' ? 'bg-gray-100' : 'bg-gray-700';
+  const inputBorder = theme === 'light' ? 'border-gray-300' : 'border-gray-600';
+  const inputText = theme === 'light' ? 'text-gray-900' : 'text-white';
+  const inputFocus = theme === 'light' ? 'focus:ring-blue-500' : 'focus:ring-cyan-500';
+  const updateButtonBg = theme === 'light' ? 'bg-blue-300 text-blue-700 hover:bg-blue-200' : 'bg-orange-300 text-orange-700 hover:bg-white';
+  const cancelButtonText = theme === 'light' ? 'text-red-600 hover:text-red-800' : 'text-red-400 hover:text-red-300';
+  const saveButtonBg = theme === 'light' ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-green-500 text-white hover:bg-green-600';
+  const saveButtonDisabled = theme === 'light' ? 'bg-gray-400 text-gray-200 cursor-not-allowed' : 'bg-gray-500 text-gray-300 cursor-not-allowed';
+  const statusSuccessBg = theme === 'light' ? 'bg-green-100 text-green-800' : 'bg-green-600 text-white';
+  const statusWarningBg = theme === 'light' ? 'bg-yellow-100 text-yellow-800' : 'bg-yellow-600 text-white';
+  const statusErrorBg = theme === 'light' ? 'bg-red-100 text-red-800' : 'bg-red-600 text-white';
+  const hrColor = theme === 'light' ? 'border-gray-300' : 'border-gray-700';
+  const loadingSpinner = theme === 'light' ? 'border-t-blue-500 border-b-blue-500' : 'border-t-cyan-500 border-b-cyan-500';
+  const loadingText = theme === 'light' ? 'text-gray-900' : 'text-white';
+  const errorBg = theme === 'light' ? 'bg-red-100' : 'bg-red-600';
+  const errorText = theme === 'light' ? 'text-red-800' : 'text-white';
+  const retryButton = theme === 'light' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-cyan-500 text-white hover:bg-cyan-600';
+  const cameraButtonBg = theme === 'light' ? 'bg-blue-400 hover:bg-gray-100 text-blue-700' : 'bg-cyan-400 hover:bg-gray-100 text-[#0F243D]';
 
   function getSafeId(userObj: UserType): string | number | undefined {
     if (typeof userObj?.id === 'string' || typeof userObj?.id === 'number') return userObj.id;
@@ -226,10 +256,10 @@ const ProfilePage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className={`min-h-screen w-full flex items-center justify-center px-4 sm:px-6 lg:px-8 ${bgColor} transition-colors`}>
         <div className="text-center">
-          <div className="rounded-full h-12 w-12 sm:h-16 sm:w-16 border-t-2 border-b-2 border-cyan-500 mx-auto mb-4 animate-spin"></div>
-          <p className="text-white text-base sm:text-lg">Loading profile...</p>
+          <div className={`rounded-full h-12 w-12 sm:h-16 sm:w-16 border-t-2 border-b-2 ${loadingSpinner} mx-auto mb-4 animate-spin transition-colors`}></div>
+          <p className={`${loadingText} text-base sm:text-lg transition-colors`}>Loading profile...</p>
         </div>
       </div>
     );
@@ -237,15 +267,15 @@ const ProfilePage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className={`min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 ${bgColor} transition-colors`}>
         <div className="text-center">
-          <div className="bg-red-600 text-white p-4 sm:p-6 rounded-lg mb-4">
+          <div className={`${errorBg} ${errorText} p-4 sm:p-6 rounded-lg mb-4 transition-colors`}>
             <h2 className="text-lg sm:text-xl font-bold mb-2">Error</h2>
             <p>{error}</p>
           </div>
           <button
             onClick={refetch}
-            className="px-4 py-2 bg-cyan-500 text-white rounded hover:bg-cyan-600 transition-colors text-sm sm:text-base"
+            className={`px-4 py-2 ${retryButton} rounded transition-colors text-sm sm:text-base`}
           >
             Retry
           </button>
@@ -256,20 +286,20 @@ const ProfilePage = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen w-full flex items-center justify-center px-4 sm:px-6 lg:px-8 lg:py-1">
-        <div className="text-white text-base sm:text-lg">User not found</div>
+      <div className={`min-h-screen w-full flex items-center justify-center px-4 sm:px-6 lg:px-8 lg:py-1 ${bgColor} transition-colors`}>
+        <div className={`${textPrimary} text-base sm:text-lg transition-colors`}>User not found</div>
       </div>
     );
   }
 
   return (
-    <div className="relative overflow-hidden bg-cover xl:mt-20 lg:mt- 2xl:mt-40 bg-center -mt-4 sm:-mt-6 lg:-mt-8">
+    <div className={`relative overflow-hidden bg-cover xl:mt-20 lg:mt-2 2xl:mt-40 bg-center -mt-4 sm:-mt-6 lg:-mt-8 ${bgColor} transition-colors`}>
       <div className="fixed top-9 left-9 z-30">
         <button
           onClick={handleBack}
-          className="text-cyan-300 flex items-center gap-2 px-3 py-1 border rounded-full  hover:bg-cyan-200 hover:text-[#0F243D]  transition-colors duration-200 font-semibold cursor-pointer"
+          className={`${backButtonBg} flex items-center gap-2 px-3 py-1 border rounded-full transition-colors duration-200 font-semibold cursor-pointer`}
         >
-          <AiOutlineArrowLeft size={22} className="text-cyan-300 hover:text-[#0F243D]" />
+          <AiOutlineArrowLeft size={22} className={`${backButtonIcon} transition-colors`} />
           <span className="text-base font-medium tracking-wide">Back</span>
         </button>
       </div>
@@ -277,16 +307,20 @@ const ProfilePage = () => {
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="mt-8 sm:mt-12 flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 lg:mb-8">
           <div className="text-center sm:text-left">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">Profile</h1>
-            <p className="text-xs sm:text-sm lg:text-base mt-1 text-zinc-100">View your profile</p>
+            <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${textPrimary} transition-colors`}>
+              Profile
+            </h1>
+            <p className={`text-xs sm:text-sm lg:text-base mt-1 ${textSecondary} transition-colors`}>
+              View your profile
+            </p>
           </div>
         </header>
 
-        <div className="w-full h-px mb-6 sm:mb-8 lg:mb-10 border-t border-dashed border-white"></div>
+        <div className={`w-full h-px mb-6 sm:mb-8 lg:mb-10 border-t border-dashed ${borderColor} transition-colors`}></div>
 
         <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
           <div className="flex-1 flex justify-center mb-6 lg:mb-0">
-            <div style={{ backgroundColor: '#0F243D' }} className="rounded-3xl pt-6 sm:pt-10 lg:pt-14 shadow-lg border border-none max-w-xs sm:max-w-sm w-full">
+            <div className={`${cardBg} rounded-3xl pt-6 sm:pt-10 lg:pt-14 shadow-lg border ${cardBorder} max-w-xs sm:max-w-sm w-full transition-colors`}>
               <div className="relative flex justify-center">
                 <div className="relative">
                   <Image
@@ -297,8 +331,8 @@ const ProfilePage = () => {
                     className="w-24 h-24 sm:w-32 sm:h-32 lg:w-48 lg:h-48 xl:w-64 xl:h-64 rounded-full border-4 border-cyan-400 object-cover"
                   />
                   {isEditing && (
-                    <label className="absolute bottom-2 right-2 bg-cyan-400 rounded-full p-2 cursor-pointer shadow-lg hover:bg-gray-100 transition-colors">
-                      <AiOutlineCamera size={18} className="text-[#0F243D]" />
+                    <label className={`absolute bottom-2 right-2 ${cameraButtonBg} rounded-full p-2 cursor-pointer shadow-lg transition-colors`}>
+                      <AiOutlineCamera size={18} />
                       <input
                         type="file"
                         accept="image/*"
@@ -311,14 +345,17 @@ const ProfilePage = () => {
               </div>
             </div>
           </div>
+
           <div className="flex-1">
-            <div style={{ backgroundColor: '#0F243D' }} className="rounded-3xl p-3 sm:p-4 lg:p-6 shadow-lg">
+            <div className={`${cardBg} rounded-3xl p-3 sm:p-4 lg:p-6 shadow-lg transition-colors`}>
               <div className="flex justify-between items-center mb-3 sm:mb-4">
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">Details</h2>
+                <h2 className={`text-xl sm:text-2xl lg:text-3xl font-bold ${textPrimary} transition-colors`}>
+                  Details
+                </h2>
                 {!isEditing ? (
                   <button
                     onClick={handleEditClick}
-                    className="px-3 sm:px-4 py-1.5 sm:py-2 bg-orange-300 text-orange-700 rounded-lg hover:bg-white transition-colors duration-200 cursor-pointer text-sm sm:text-base"
+                    className={`${updateButtonBg} px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors duration-200 cursor-pointer text-sm sm:text-base`}
                   >
                     Update
                   </button>
@@ -326,18 +363,14 @@ const ProfilePage = () => {
                   <div className="flex gap-2 sm:gap-3">
                     <button
                       onClick={handleCancel}
-                      className="px-3 sm:px-4 py-1.5 sm:py-2 text-red-400 hover:text-red-300 transition-colors duration-200 cursor-pointer text-sm sm:text-base"
+                      className={`${cancelButtonText} px-3 sm:px-4 py-1.5 sm:py-2 transition-colors duration-200 cursor-pointer text-sm sm:text-base`}
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleSubmit}
                       disabled={!hasChanges()}
-                      className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base transition-colors duration-200 cursor-pointer ${
-                        hasChanges()
-                          ? 'bg-green-500 text-white hover:bg-green-600'
-                          : 'bg-gray-500 text-gray-300 cursor-not-allowed'
-                      }`}
+                      className={`${hasChanges() ? saveButtonBg : saveButtonDisabled} px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base transition-colors duration-200 cursor-pointer`}
                     >
                       Save
                     </button>
@@ -347,13 +380,13 @@ const ProfilePage = () => {
 
               {status && (
                 <div
-                  className={`mb-3 sm:mb-4 px-4 py-2 rounded text-center ${
+                  className={`mb-3 sm:mb-4 px-4 py-2 rounded text-center text-sm sm:text-base transition-colors ${
                     status.includes('success')
-                      ? 'bg-green-600 text-white'
+                      ? statusSuccessBg
                       : status.includes('No changes')
-                      ? 'bg-yellow-600 text-white'
-                      : 'bg-red-600 text-white'
-                  } text-sm sm:text-base`}
+                      ? statusWarningBg
+                      : statusErrorBg
+                  }`}
                 >
                   {status}
                 </div>
@@ -362,83 +395,104 @@ const ProfilePage = () => {
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-3 sm:mb-4">
                   <div className="flex-1">
-                    <label className="block text-sm sm:text-base lg:text-lg text-cyan-300 mb-2">Role</label>
-                    <p className="text-white text-sm sm:text-base">{formData.role}</p>
+                    <label className={`block text-sm sm:text-base lg:text-lg ${labelText} mb-2 transition-colors`}>
+                      Role
+                    </label>
+                    <p className={`${textPrimary} text-sm sm:text-base transition-colors`}>{formData.role}</p>
                   </div>
                   <div className="flex-1">
-                    <label className="block text-sm sm:text-base lg:text-lg text-cyan-300 mb-2">Registered date</label>
-                    <p className="text-white text-sm sm:text-base">
+                    <label className={`block text-sm sm:text-base lg:text-lg ${labelText} mb-2 transition-colors`}>
+                      Registered date
+                    </label>
+                    <p className={`${textPrimary} text-sm sm:text-base transition-colors`}>
                       {formData.date_joined
                         ? new Date(formData.date_joined).toLocaleDateString()
                         : 'Not specified'}
                     </p>
                   </div>
                 </div>
-                <hr className="border-gray-700 my-3 sm:my-4" />
+                <hr className={`${hrColor} my-3 sm:my-4 transition-colors`} />
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-3 sm:mb-4">
                   <div>
-                    <label className="block text-sm sm:text-base lg:text-lg text-cyan-300 mb-2">First Name</label>
+                    <label className={`block text-sm sm:text-base lg:text-lg ${labelText} mb-2 transition-colors`}>
+                      First Name
+                    </label>
                     {isEditing ? (
                       <input
                         type="text"
                         name="first_name"
                         value={formData.first_name || ''}
                         onChange={handleChange}
-                        className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm sm:text-base lg:text-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        className={`w-full ${inputBg} border ${inputBorder} rounded-lg px-3 py-2 ${inputText} text-sm sm:text-base lg:text-lg focus:outline-none focus:ring-2 ${inputFocus} transition-colors`}
                       />
                     ) : (
-                      <p className="text-white text-base sm:text-lg lg:text-xl">{formData.first_name || 'Not specified'}</p>
+                      <p className={`${textPrimary} text-base sm:text-lg lg:text-xl transition-colors`}>
+                        {formData.first_name || 'Not specified'}
+                      </p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm sm:text-base lg:text-lg text-cyan-300 mb-2">Last Name</label>
+                    <label className={`block text-sm sm:text-base lg:text-lg ${labelText} mb-2 transition-colors`}>
+                      Last Name
+                    </label>
                     {isEditing ? (
                       <input
                         type="text"
                         name="last_name"
                         value={formData.last_name || ''}
                         onChange={handleChange}
-                        className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm sm:text-base lg:text-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        className={`w-full ${inputBg} border ${inputBorder} rounded-lg px-3 py-2 ${inputText} text-sm sm:text-base lg:text-lg focus:outline-none focus:ring-2 ${inputFocus} transition-colors`}
                       />
                     ) : (
-                      <p className="text-white text-base sm:text-lg lg:text-xl">{formData.last_name || 'Not specified'}</p>
+                      <p className={`${textPrimary} text-base sm:text-lg lg:text-xl transition-colors`}>
+                        {formData.last_name || 'Not specified'}
+                      </p>
                     )}
                   </div>
                 </div>
-                <hr className="border-gray-700 my-3 sm:my-4" />
+                <hr className={`${hrColor} my-3 sm:my-4 transition-colors`} />
+
                 <div className="mb-3 sm:mb-4">
-                  <label className="block text-sm sm:text-base lg:text-lg text-cyan-300 mb-2">Email</label>
+                  <label className={`block text-sm sm:text-base lg:text-lg ${labelText} mb-2 transition-colors`}>
+                    Email
+                  </label>
                   {isEditing ? (
                     <input
                       type="email"
                       name="email"
                       value={formData.email || ''}
                       onChange={handleChange}
-                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm sm:text-base lg:text-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      className={`w-full ${inputBg} border ${inputBorder} rounded-lg px-3 py-2 ${inputText} text-sm sm:text-base lg:text-lg focus:outline-none focus:ring-2 ${inputFocus} transition-colors`}
                     />
                   ) : (
-                    <p className="text-white text-base sm:text-lg lg:text-xl">{formData.email || 'Not specified'}</p>
+                    <p className={`${textPrimary} text-base sm:text-lg lg:text-xl transition-colors`}>
+                      {formData.email || 'Not specified'}
+                    </p>
                   )}
                   {isEditing && emailError && (
                     <p className="text-red-500 text-sm mt-1">{emailError}</p>
                   )}
                 </div>
-                <hr className="border-gray-700 my-3 sm:my-4" />
+                <hr className={`${hrColor} my-3 sm:my-4 transition-colors`} />
+
                 {isEditing && (
                   <div className="mb-3 sm:mb-6 lg:mb-8">
-                    <label className="block text-sm sm:text-base lg:text-lg text-cyan-300 mb-2">Password (required for update)</label>
+                    <label className={`block text-sm sm:text-base lg:text-lg ${labelText} mb-2 transition-colors`}>
+                      Password (required for update)
+                    </label>
                     <div className="relative">
                       <input
                         type={showPassword ? 'text' : 'password'}
                         name="password"
                         value={formData.password || ''}
                         onChange={handleChange}
-                        className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm sm:text-base lg:text-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        className={`w-full ${inputBg} border ${inputBorder} rounded-lg px-3 py-2 ${inputText} text-sm sm:text-base lg:text-lg focus:outline-none focus:ring-2 ${inputFocus} transition-colors`}
                       />
                       <button
                         type="button"
                         onClick={togglePasswordVisibility}
-                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-white"
+                        className={`absolute inset-y-0 right-0 flex items-center pr-3 ${textPrimary} transition-colors`}
                       >
                         {showPassword ? (
                           <AiOutlineEyeInvisible size={20} className="w-5 sm:w-6 h-5 sm:h-6" />
@@ -454,7 +508,7 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        <div className="w-full h-px mt-6 sm:mt-8 lg:mt-10 border-t border-dashed border-white"></div>
+        <div className={`w-full h-px mt-6 sm:mt-8 lg:mt-10 border-t border-dashed ${borderColor} transition-colors`}></div>
       </div>
     </div>
   );

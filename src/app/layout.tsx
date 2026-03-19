@@ -6,6 +6,7 @@ import SidebarNav from "./sharedComponents/Navigation";
 import ProfileMenu from "./sharedComponents/ProfileMenu";
 import useFetchAdmins from "./hooks/useFetchAdmin";
 import Background from "./sharedComponents/Background";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const teachers = Teachers({
   subsets: ["latin"],
@@ -39,20 +40,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${teachers.variable} antialiased`}>
-        <div className="absolute inset-0 -z-10 opacity-20 pointer-events-none">
-          <Background />
-        </div>
-        <div className="flex min-h-screen">
-          {showSidebar && <SidebarNav />}
-          <div className="flex-1 flex flex-col">
-            {showProfileMenu && (
-              <div className="absolute top-[-8] right-10 z-30">
-                <ProfileMenu image={profileImage} />
-              </div>
-            )}
-            <main>{children}</main>
+        <ThemeProvider>
+          <div className="absolute inset-0 -z-10 opacity-20 pointer-events-none">
+            <Background />
           </div>
-        </div>
+          <div className="flex min-h-screen">
+            {showSidebar && <SidebarNav />}
+            <div className="flex-1 flex flex-col">
+              {showProfileMenu && (
+                <div className="absolute top-[-8] right-10 z-30">
+                  <ProfileMenu image={profileImage} />
+                </div>
+              )}
+              <main>{children}</main>
+            </div>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

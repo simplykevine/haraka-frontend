@@ -44,14 +44,14 @@ export default function ImportCollisionRisk() {
       )}
 
       <div className={`rounded-xl p-5 border ${style.border} ${style.bg} flex flex-col items-center gap-2`}>
-        <p className="text-gray-400 text-xs uppercase tracking-widest">Collision Risk Level</p>
+        <p className="text-gray-400 text-lg uppercase tracking-widest">Collision Risk Level</p>
         <div className="flex gap-3 items-center">
           <div className={`w-5 h-5 rounded-full ${style.gauge} shadow-lg`} />
           <span className={`text-3xl font-extrabold ${style.color}`}>{style.label}</span>
         </div>
         <div className="flex gap-4 mt-1">
           {['LOW', 'MEDIUM', 'HIGH'].map((lvl) => (
-            <span key={lvl} className={`text-xs px-3 py-1 rounded-full border font-semibold
+            <span key={lvl} className={`text-lg px-3 py-1 rounded-full border font-semibold
               ${risk === lvl ? `${riskStyles[lvl].color} ${riskStyles[lvl].bg} ${riskStyles[lvl].border}` : 'text-gray-500 border-gray-700'}`}>
               {lvl}
             </span>
@@ -60,7 +60,7 @@ export default function ImportCollisionRisk() {
       </div>
 
       <div className="space-y-2">
-        <p className="text-gray-200 text-xs uppercase tracking-widest">Timeline (Feb – Jul 2026)</p>
+        <p className="text-gray-200 text-lg uppercase tracking-widest">Timeline (Feb – Jul 2026)</p>
         <div className="relative h-8 bg-gray-800 rounded-full overflow-visible">
           <div
             className="absolute top-0 h-full bg-green-600/50 border border-green-500 rounded"
@@ -80,7 +80,7 @@ export default function ImportCollisionRisk() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 text-sm">
+      <div className="grid grid-cols-2 gap-3 text-lg">
         <div className="bg-[#0d1f38] rounded-lg p-3 border border-teal-400/20">
           <p className="text-gray-100 text-lg">Harvest Window</p>
           <p className="text-white font-medium">Mar 15 – May 30, 2026</p>

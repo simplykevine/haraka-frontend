@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import ThemeToggle from '@/app/sharedComponents/ThemeToggle';
 import SupplyGapPanel from './components/SupplyGapPanel';
 import ImportCollisionRisk from './components/ImportCollisionRisk';
 import PolicyHeatMap from './components/PolicyHeatMap';
@@ -12,6 +13,9 @@ export default function EconomistPage() {
 
   return (
     <div className="min-h-screen bg-[#091326] text-white px-6 py-8 space-y-8">
+      <div className="flex justify-end">
+        <ThemeToggle />
+      </div>
 
       <div className="border-b border-teal-400/20 pb-6">
         <h1 className="text-3xl font-extrabold text-white tracking-tight">
@@ -45,10 +49,10 @@ export default function EconomistPage() {
                 ✨
               </div>
               <div>
-                <p className="text-xs font-semibold tracking-widest text-cyan-400 uppercase mb-1">
+                <p className="text-lg font-semibold tracking-widest text-cyan-400 uppercase mb-1">
                   AI-Powered Economic Reasoning
                 </p>
-                <h2 className="text-xl sm:text-2xl font-extrabold text-white leading-snug">
+                <h2 className="text-xl lg:text-2xl font-extrabold text-white leading-snug">
                   Ask Zeno — Your Economic Intelligence Agent
                 </h2>
                 <p className="text-gray-200 text-lg mt-1.5 max-w-xl leading-relaxed">
@@ -58,7 +62,7 @@ export default function EconomistPage() {
             </div>
 
             <div className="flex-shrink-0">
-              <button className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-black font-bold text-sm shadow-[0_0_20px_rgba(0,220,200,0.3)] group-hover:shadow-[0_0_30px_rgba(0,220,200,0.5)] transition-all duration-300 whitespace-nowrap">
+              <button className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-black font-bold text-lg shadow-[0_0_20px_rgba(0,220,200,0.3)] group-hover:shadow-[0_0_30px_rgba(0,220,200,0.5)] transition-all duration-300 whitespace-nowrap">
                 <span>Chat with Zeno</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

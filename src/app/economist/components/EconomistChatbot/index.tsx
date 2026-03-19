@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { useTheme } from '@/app/context/ThemeContext';
 import UserMessage from '@/app/chat/ChatMessages/components/UserMessageCard';
 import AgentMessage from '@/app/chat/ChatMessages/components/AgentMessageCard';
 
@@ -20,9 +21,10 @@ const SUGGESTIONS = [
   { label: 'Compare logistics: Mombasa port vs Busia border',     panel: 'logistics' },
 ];
 
-const API_URL = process.env.BASE_URL 
+const API_URL = process.env.BASE_URL
 
 export default function EconomistChatbot() {
+  const { theme } = useTheme();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -65,7 +67,7 @@ export default function EconomistChatbot() {
         ...prev,
         {
           role: 'assistant',
-          content: '⚠️ Could not reach the Zeno backend. Make sure it is running on port 8080.',
+          content: '⚠️ Could not reach the Zeno backend.',
           panel: resolvedPanel,
         },
       ]);
@@ -85,10 +87,35 @@ export default function EconomistChatbot() {
     sendMessage(input, activePanel);
   };
 
-  return (
-    <div className="rounded-xl border border-teal-400/30 bg-[#091326] flex flex-col overflow-hidden">
+  const containerBg = theme === 'light' ? 'bg-white' : 'bg-[#091326]';
+  const headerBg = theme === 'light' ? 'bg-blue-50' : 'bg-[#0a1628]';
+  const borderColor = theme === 'light' ? 'border-blue-200' : 'border-teal-400/30';
+  const textPrimary = theme === 'light' ? 'text-gray-900' : 'text-white';
+  const textSecondary = theme === 'light' ? 'text-gray-600' : 'text-gray-400';
+  const textTertiary = theme === 'light' ? 'text-gray-500' : 'text-gray-500';
+  const selectBg = theme === 'light' ? 'bg-blue-50' : 'bg-[#0d1f38]';
+  const selectText = theme === 'light' ? 'text-gray-700' : 'text-gray-300';
+  const selectBorder = theme === 'light' ? 'border-blue-300' : 'border-teal-400/30';
+  const suggestionBg = theme === 'light' ? 'bg-blue-100' : 'bg-teal-900/30';
+  const suggestionText = theme === 'light' ? 'text-blue-700' : 'text-teal-300';
+  const suggestionBorder = theme === 'light' ? 'border-blue-300' : 'border-teal-600/40';
+  const suggestionHover = theme === 'light' ? 'hover:bg-blue-200' : 'hover:bg-teal-800/40';
+  const messageAreaBg = theme === 'light' ? 'bg-gray-50' : 'bg-[#0B182F]';
+  const messageAreaBorder = theme === 'light' ? 'border-gray-200' : 'border-white/10';
+  const inputBg = theme === 'light' ? 'bg-blue-100' : 'bg-blue-900/70';
+  const inputBorder = theme === 'light' ? 'border-blue-300' : 'border-cyan-400/50';
+  const inputText = theme === 'light' ? 'text-gray-900' : 'text-white';
+  const inputPlaceholder = theme === 'light' ? 'placeholder-blue-500' : 'placeholder-cyan-300';
+  const buttonBg = theme === 'light' ? 'bg-blue-500' : 'bg-cyan-500';
+  const buttonHover = theme === 'light' ? 'hover:bg-blue-600' : 'hover:bg-cyan-400';
+  const panelBadgeText = theme === 'light' ? 'text-blue-600' : 'text-teal-400';
+  const emptyStateText = theme === 'light' ? 'text-gray-500' : 'text-gray-500';
+  const emptyStateSmallText = theme === 'light' ? 'text-gray-400' : 'text-gray-600';
 
-      <div className="flex items-center gap-3 px-6 py-4 border-b border-white/10">
+  return (
+    <div className={`rounded-xl border ${borderColor} ${containerBg} flex flex-col overflow-hidden`}>
+
+      <div className={`flex items-center gap-3 px-6 py-4 border-b ${messageAreaBorder} ${headerBg}`}>
         <Image
           src="/images/zeno-logo-icon.png"
           alt="Zeno AI Logo"
@@ -96,13 +123,14 @@ export default function EconomistChatbot() {
           height={32}
         />
         <div>
-          <h2 className="text-white font-semibold">Dr. Zeno — Economist AI</h2>
-          <p className="text-gray-400 text-xs">Ask questions about any dashboard panel above</p>
+          <h2 className={`${textPrimary} font-semibold`}>Dr. Zeno — Economist AI</h2>
+          <p className={`${textSecondary} text-xs`}>Ask questions about any dashboard panel above</p>
         </div>
+        
         <select
           value={activePanel}
           onChange={e => setActivePanel(e.target.value)}
-          className="ml-auto bg-[#0d1f38] text-gray-300 text-xs border border-teal-400/30 rounded-lg px-3 py-1.5 focus:outline-none cursor-pointer"
+          className={`ml-auto ${selectBg} ${selectText} text-xs border ${selectBorder} rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-cyan-400 cursor-pointer transition-all`}
         >
           <option value="supply_gap">Supply Gap</option>
           <option value="import_collision">Import Collision</option>
@@ -113,13 +141,13 @@ export default function EconomistChatbot() {
         </select>
       </div>
 
-      <div className="flex gap-2 flex-wrap px-6 py-3 border-b border-white/5 bg-[#0a1628]">
+      <div className={`flex gap-2 flex-wrap px-6 py-3 border-b ${messageAreaBorder} ${headerBg}`}>
         {SUGGESTIONS.map((s) => (
           <button
             key={s.label}
             onClick={() => handleSuggestion(s)}
             disabled={loading}
-            className="text-xs px-3 py-1.5 rounded-full bg-teal-900/30 text-teal-300 border border-teal-600/40 hover:bg-teal-800/40 transition-colors disabled:opacity-50 cursor-pointer whitespace-nowrap"
+            className={`text-xs px-3 py-1.5 rounded-full ${suggestionBg} ${suggestionText} border ${suggestionBorder} ${suggestionHover} transition-colors disabled:opacity-50 cursor-pointer whitespace-nowrap`}
           >
             {s.label}
           </button>
@@ -127,11 +155,11 @@ export default function EconomistChatbot() {
       </div>
 
       <div
-        className="flex-1 overflow-y-auto px-6 py-4 space-y-4 bg-[#0B182F]"
+        className={`flex-1 overflow-y-auto px-6 py-4 space-y-4 ${messageAreaBg}`}
         style={{ minHeight: '300px', maxHeight: '480px' }}
       >
         {messages.length === 0 && (
-          <div className="text-center text-gray-500 mt-10 space-y-2">
+          <div className={`text-center ${emptyStateText} mt-10 space-y-2`}>
             <Image
               src="/images/zeno-logo-icon.png"
               alt="Zeno"
@@ -140,7 +168,7 @@ export default function EconomistChatbot() {
               className="mx-auto opacity-30"
             />
             <p className="text-sm">Click a suggestion above or type a question below.</p>
-            <p className="text-xs text-gray-600">
+            <p className={`text-xs ${emptyStateSmallText}`}>
               Dr. Zeno has full access to all dashboard panels and East African trade data.
             </p>
           </div>
@@ -152,7 +180,7 @@ export default function EconomistChatbot() {
               <div key={i}>
                 {m.panel && (
                   <div className="flex justify-end mb-1">
-                    <span className="text-[10px] text-teal-400 uppercase tracking-widest font-semibold">
+                    <span className={`text-[10px] ${panelBadgeText} uppercase tracking-widest font-semibold`}>
                       📊 {m.panel.replace(/_/g, ' ')}
                     </span>
                   </div>
@@ -178,10 +206,10 @@ export default function EconomistChatbot() {
         <div ref={bottomRef} />
       </div>
 
-      <div className="px-6 py-4 border-t border-white/10 bg-[#091326]">
+      <div className={`px-6 py-4 border-t ${messageAreaBorder} ${containerBg}`}>
         <form
           onSubmit={handleSubmit}
-          className="relative flex items-center w-full bg-blue-900/70 border border-cyan-400/50 rounded-full shadow-lg overflow-hidden py-1 pl-4 pr-1"
+          className={`relative flex items-center w-full ${inputBg} border ${inputBorder} rounded-full shadow-lg overflow-hidden py-1 pl-4 pr-1 transition-all`}
         >
           <input
             type="text"
@@ -189,12 +217,12 @@ export default function EconomistChatbot() {
             onChange={e => setInput(e.target.value)}
             placeholder="Ask Dr. Zeno about any dashboard panel..."
             disabled={loading}
-            className="flex-1 bg-transparent text-white placeholder-cyan-300 px-2 py-2 focus:outline-none text-sm"
+            className={`flex-1 bg-transparent ${inputText} ${inputPlaceholder} px-2 py-2 focus:outline-none text-sm disabled:opacity-50`}
           />
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="mr-2 bg-cyan-500 rotate-45 hover:bg-cyan-400 text-white p-2 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className={`mr-2 ${buttonBg} rotate-45 ${buttonHover} text-white p-2 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer`}
             title="Send"
           >
             {loading ? (
@@ -209,7 +237,7 @@ export default function EconomistChatbot() {
             )}
           </button>
         </form>
-        <div className="text-sm text-gray-400 mt-2 text-center">
+        <div className={`text-sm ${textSecondary} mt-2 text-center`}>
           Zeno AI can hallucinate, so double-check it
         </div>
       </div>

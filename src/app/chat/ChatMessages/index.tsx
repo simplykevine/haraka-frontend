@@ -7,7 +7,6 @@ import ChatArtifactRenderer from "./components/ArtifactRender";
 import type { ChatMessagesProps, RunLike, RunFile } from "@/app/utils/types/chat";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import Image from "next/image";
 import { Sparkles } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";

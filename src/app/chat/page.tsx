@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import Sidebar from "../sharedComponents/Sidebar";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "../sharedComponents/ChatInput";
+import ThemeToggle from "../sharedComponents/ThemeToggle";
 import { RunFile, RunLike } from "../utils/types/chat";
 import { Conversation, InputFile } from "../utils/types/runs";
 import { useConversationsWithRuns } from "../hooks/useConversationWithRuns";
@@ -17,7 +18,7 @@ const PRE_PROMPTS = [
   "Assume a geopolitical conflict disrupts fertilizer exports from the Middle East and increases global shipping costs by 20%. Model the impact on Kenya's maize production, input costs, retail maize prices, and food inflation. Identify supply-chain vulnerabilities and estimate time lag effects.",
   "If Tanzania increases maize production by 15% due to favorable rainfall, how would this affect Kenyan maize exports, cross-border trade flows, and domestic producer prices?",
   "Simulate a temporary 6-month maize import ban from Tanzania or Uganda. Estimate impact on domestic supply gap, price volatility, and food security indicators. Would strategic reserves absorb the shock?",
-  "what will the current war hapening between Iran, Israel and USA affect Kenya's economy in terms of exports and exports currentlyterms of exports and imports",
+  "what will the current war happening between Iran, Israel and USA affect Kenya's economy in terms of exports and imports",
 ];
 
 const getMimeType = (fileType: string): string => {
@@ -145,7 +146,6 @@ export default function ChatPage() {
       setRuns(mappedRuns);
       setShowGreeting(mappedRuns.length === 0);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedConversationId, conversations, setRuns]);
 
   const handleSendMessage = useCallback(async ({
@@ -345,7 +345,12 @@ export default function ChatPage() {
       />
 
       <div className="flex-1 flex flex-col h-screen bg-transparent">
-        <div className="flex flex-col gap-2 px-4 pt-4 pb-2 overflow-y-auto flex-1">
+        <div className="flex justify-between items-center px-4 pt-4 pb-2 border-b border-gray-700">
+          <h2 className="text-xl font-bold text-white">Chat</h2>
+          <ThemeToggle />
+        </div>
+
+        <div className="flex flex-col gap-2 px-4 pb-2 overflow-y-auto flex-1">
 
           {showGreeting ? (
             <div className="flex flex-col items-center justify-center h-full gap-10">
