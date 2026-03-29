@@ -38,7 +38,8 @@ export default function TermsModal({
       }}
     >
       <div className="bg-[#091227] border border-[#9FF8F8] rounded-lg shadow-2xl p-8 w-full max-w-xl max-h-[80vh] overflow-y-auto relative">
-        <div className="sticky top-0 z-10 flex justify-end ">
+        {/* Close Button */}
+        <div className="sticky top-0 z-10 flex justify-end">
           <button
             onClick={onClose}
             className="text-[#9FF8F8] hover:text-white"
@@ -49,102 +50,166 @@ export default function TermsModal({
           </button>
         </div>
 
+        {/* Title */}
         <h2 className="text-3xl text-center font-bold mb-4 text-[#9FF8F8]">
-          Zeno AI Terms and Conditions & Privacy Policy
+          Terms of Use (EULA)
         </h2>
-        <div className="space-y-4 text-white text-base">
+        <p className="text-white/70 text-center text-sm mb-6">
+          Effective date: <span className="text-[#9FF8F8] font-semibold">March 25, 2026</span>
+        </p>
+
+        {/* Introduction Box */}
+        <div className="bg-[#0B182F] border-l-4 border-[#9FF8F8] p-4 mb-6 rounded-r">
+          <p className="text-white text-sm leading-relaxed">
+            These Terms of Use govern your access to and use of Zeno AI. By using the platform, 
+            you agree to these terms. Zeno is a <span className="text-[#9FF8F8] font-semibold">decision-support tool</span>  intended 
+            to assist economists and policy analysts with trade analysis, forecasting, and 
+            scenario exploration. It does not replace professional judgment or official 
+            policy processes.
+          </p>
+        </div>
+
+        {/* Terms Sections */}
+        <div className="space-y-5 text-white text-base">
+          {/* Section 1 */}
           <div>
-            <h3 className="text-2xl mb-3 text-[#9FF8F8]">1. Introduction and Acceptance</h3>
-            <p>
-              This document outlines the terms and conditions for using the Zeno AI system, an AI-driven economic forecasting and decision-support agent. By accessing or using Zeno, you agree to comply with and be bound by these terms. Your use of the system constitutes explicit consent to the collection, processing, and use of your data as described herein, in accordance with the Kenya Data Protection Act, 2019, and other applicable laws.
+            <h3 className="text-xl mb-2 text-[#9FF8F8] font-semibold">1. Purpose of the Platform</h3>
+            <p className="text-white/90 leading-relaxed">
+              Zeno is provided as a <span className="text-[#9FF8F8]">decision-support and research-oriented tool</span> 
+              intended to assist analysis workflows. It does not replace professional judgment, 
+              official policy processes, or expert review, and it should not be treated as an 
+              official source of truth. All outputs should be validated by qualified users before 
+              use in high-stakes settings.
             </p>
           </div>
+
+          {/* Section 2 */}
           <div>
-            <h3 className="text-2xl mb-3 text-[#9FF8F8]">2. Data Collection and Use</h3>
-            <p>
-              We collect and process your personal data for the purpose of providing Zeno&apos;s services, including economic forecasting, scenario analysis, and decision support. This data may include your full name and email address.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-2xl mb-3 text-[#9FF8F8]">3. Data Security and Encryption</h3>
-            <p>
-              We are committed to protecting your data through appropriate security measures to prevent unauthorized access, modification, or disclosure. All sensitive data, including user-uploaded datasets and other confidential information, is protected.
-            </p>
-            <ul className="list-disc ml-6">
-              <li>
-                <span className='font-semibold'>Data in Transit:</span> Data sent between your device and our systems, as well as between Zeno&apos;s components and external APIs, is encrypted using secure protocols like TLS 1.3 to ensure confidentiality.
-              </li>
-              <li>
-                <span className='font-semibold'>Data at Rest:</span> Sensitive data fields, including your full name and email address, are encrypted at rest using the AES-256 algorithm to prevent unauthorized access.
-              </li>
-              <li>
-                <span className='font-semibold'>Password Security:</span> To protect your account, your password is not stored directly but is securely stored as a one-way cryptographic hash.
-              </li>
+            <h3 className="text-xl mb-2 text-[#9FF8F8] font-semibold">2. Acceptable Use</h3>
+            <p className="text-white/90 leading-relaxed mb-2">You agree not to:</p>
+            <ul className="list-disc ml-6 space-y-1 text-white/90">
+              <li>Use the platform for unlawful purposes</li>
+              <li>Attempt to gain unauthorized access to accounts, data, or system infrastructure</li>
+              <li>Upload malicious content or disrupt system operations</li>
+              <li>Use the platform to produce or spread deceptive content presented as verified fact</li>
+              <li>Reverse engineer, decompile, or attempt to extract source code from the platform</li>
+              <li>Share your account credentials with unauthorized third parties</li>
             </ul>
           </div>
+
+          {/* Section 3 */}
           <div>
-            <h3 className="text-2xl mb-3 text-[#9FF8F8]">4. Data Localization & Cross-Border Transfer</h3>
-            <p>
-              Your data may be processed in locations outside of Kenya to leverage global cloud infrastructure and to interact with core AI modules like the Gemini Large Language Model. We anonymize or pseudonymize Personally Identifiable Information (PII) before it is sent to external services to prevent the transfer of sensitive user information. By using Zeno, you consent to this data transfer and processing.
+            <h3 className="text-xl mb-2 text-[#9FF8F8] font-semibold">3. User Responsibility & Appropriate Reliance</h3>
+            <p className="text-white/90 leading-relaxed">
+              You are responsible for how you interpret and use Zeno's outputs. Outputs should be 
+              treated as <span className="text-[#9FF8F8]">advisory</span> and may contain errors. Users must validate 
+              critical information before using it in high-stakes settings, including policy 
+              recommendations, trade negotiations, or public communications. The platform is 
+              designed to support human decision-making, not replace it.
+            </p>
+            <div className="mt-3 bg-[#0B182F] border-l-4 border-amber-500 p-3 rounded-r">
+              <p className="text-amber-400 text-xs">
+                <strong>Important:</strong> Final policy decisions must always include human 
+                expert review and validation.
+              </p>
+            </div>
+          </div>
+
+          {/* Section 4 */}
+          <div>
+            <h3 className="text-xl mb-2 text-[#9FF8F8] font-semibold">4. Content You Submit</h3>
+            <p className="text-white/90 leading-relaxed mb-2">
+              You retain responsibility for the content you submit. You should not submit 
+              confidential materials unless you have the right and authorization to do so.
+            </p>
+            <p className="text-white/90 leading-relaxed">
+              By using the platform, you grant Zeno permission to process your submitted content 
+              to generate outputs and to store run history for traceability and continuity. 
+              Stored runs may be reviewed for quality improvement and research purposes under 
+              ethical approval guidelines.
             </p>
           </div>
+
+          {/* Section 5 */}
           <div>
-            <h3 className="text-2xl mb-3 text-[#9FF8F8]">5. Your Rights</h3>
-            <p>
-              You have the following rights regarding your data in accordance with the Kenya Data Protection Act and GDPR:
-            </p>
-            <ul className="list-disc ml-6">
-              <li>
-                <span className='font-semibold'>Right to Data Deletion:</span> You have the right to request the deletion of your personal data from our systems. You can do this through the &quot;Delete Account&quot; option in your account settings. Upon your request, your data will be fully anonymized, and you will receive a confirmation.
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-2xl mb-3 text-[#9FF8F8]">6. Chats Usage Policy</h3>
-            <p>
-              To ensure fair access for all users and maintain the quality of our service, we kindly ask you to be mindful of the following usage limits:
-            </p>
-            <ul className="list-disc ml-6 mb-3">
-              <li>
-                <span className='font-semibold'>Daily Chat Limit:</span> You may start up to 5 new chats per day.
-              </li>
-              <li>
-                <span className='font-semibold'>Daily Query Limit:</span> Across all your chats, you can send up to 20 messages (queries) per day.
-              </li>
-            </ul>
-            <p>
-              You can continue any of your previous chats at any time—even older ones! The 20-query limit applies only to new messages you send in a single day, not to viewing or revisiting past conversations.
-              We encourage you to make the most of each message by being clear and specific—this helps you get the best possible responses while staying within your daily allowance.
+            <h3 className="text-xl mb-2 text-[#9FF8F8] font-semibold">5. Limitations of Liability</h3>
+            <p className="text-white/90 leading-relaxed">
+              Zeno is provided <span className="text-[#9FF8F8]">"as is"</span> for research and decision-support purposes. 
+              To the maximum extent permitted by law, the project team is not liable for losses 
+              arising from reliance on generated outputs, system downtime, data inaccuracies, or 
+              any consequential damages. Users assume all risk associated with their use of the 
+              platform and its outputs.
             </p>
           </div>
+
+          {/* Section 6 */}
           <div>
-            <h3 className="text-2xl mb-3 text-[#9FF8F8]">7. Transparency and Explainability</h3>
-            <p>
-              Zeno is designed to be a transparent AI system. We are committed to providing you with clear explanations of how the agent works and generates its outputs. The system will:
-            </p>
-            <ul className="list-disc ml-6">
-              <li>Provide clear explanations for its recommendations, including the data used.</li>
-              <li>Show how AI reasoning was applied for transparency.</li>
-              <li>Offer detailed information on its architecture, trusted data sources, and model limitations.</li>
-            </ul>
-            <p>
-              This information is designed to help you understand the outputs and make informed decisions, promoting the fair and transparent use of AI.
+            <h3 className="text-xl mb-2 text-[#9FF8F8] font-semibold">6. Intellectual Property</h3>
+            <p className="text-white/90 leading-relaxed">
+              Unless otherwise stated, the Zeno system, its design, and its code are owned by 
+              the project author or relevant rights holders. You may not copy, redistribute, 
+              resell, or create derivative works from the platform without explicit written 
+              permission. All trademarks, logos, and brand names are the property of their 
+              respective owners.
             </p>
           </div>
+
+          {/* Section 7 */}
           <div>
-            <h3 className="text-2xl mb-3 text-[#9FF8F8]">8. Contact Us</h3>
-            <p>
-              If you have any questions about this document or your data, please contact us at <span className='text-[#9FF8F8]'>zeno@gmail.com</span>.
+            <h3 className="text-xl mb-2 text-[#9FF8F8] font-semibold">7. Termination</h3>
+            <p className="text-white/90 leading-relaxed">
+              Access may be suspended or terminated if misuse is detected or if continued access 
+              poses a security or ethical risk. Users will be notified of termination where 
+              reasonably practicable. Upon termination, your right to use the platform ceases 
+              immediately, but stored runs may be retained for audit and research purposes 
+              under ethical guidelines.
             </p>
           </div>
+
+          {/* Section 8 */}
           <div>
-            <h3 className="text-2xl mb-3 text-[#9FF8F8]">Disclaimer</h3>
-            <p>
-              This is a draft document and not legal advice. It is provided to show compliance with your CRD, but you must have it reviewed and approved by a legal professional before use.
+            <h3 className="text-xl mb-2 text-[#9FF8F8] font-semibold">8. Changes to These Terms</h3>
+            <p className="text-white/90 leading-relaxed">
+              Terms may be updated to reflect improvements, legal requirements, or governance 
+              updates. Users will be notified of material changes via email or platform notice 
+              where feasible. Continued use after changes means you accept the updated terms. 
+              We encourage users to review these terms periodically.
+            </p>
+          </div>
+
+          {/* Section 9 */}
+          <div>
+            <h3 className="text-xl mb-2 text-[#9FF8F8] font-semibold">9. Contact</h3>
+            <p className="text-white/90 leading-relaxed mb-2">
+              For questions about these terms, privacy practices, or ethical concerns, contact:
+            </p>
+            <div className="bg-[#0B182F] rounded p-3">
+              <p className="text-white/90">
+                <strong className="text-[#9FF8F8]">Email:</strong>{' '}
+                <a href="mailto:zenoaiagent@gmail.com" className="text-[#9FF8F8] hover:underline">
+                  zenoaiagent@gmail.com
+                </a>
+              </p>
+              <p className="text-white/90 mt-2">
+                <strong className="text-[#9FF8F8]">Project:</strong> Zeno AI - Agricultural Trade Policy Decision-Support
+              </p>
+              <p className="text-white/90 mt-2">
+                <strong className="text-[#9FF8F8]">Institution:</strong> African Leadership University, Rwanda
+              </p>
+            </div>
+          </div>
+
+          {/* Disclaimer */}
+          <div className="bg-[#0B182F] border border-white/20 rounded p-4 mt-4">
+            <p className="text-white/60 text-xs">
+              <strong>Disclaimer:</strong> This is a draft document for academic compliance purposes. 
+              It is provided to show compliance with ethical requirements, but should be reviewed 
+              and approved by a legal professional before production use.
             </p>
           </div>
         </div>
 
+        {/* Agreement Checkbox & Button */}
         <div className="flex flex-col mt-6">
           <div className="flex items-center justify-between gap-4 w-full">
             <label className="flex items-center gap-2 select-none group w-full">
