@@ -9,6 +9,11 @@ type ExtendedChartData = ChartData & {
   demand?: number[];
   regions?: Array<{ name: string; price: number; change_pct?: number }>;
   y_label?: string;
+  dual_forecast?: {
+    unit_price?: { forecast: number; intervals: { lower: number[]; upper: number[]; mean: number[] } };
+    total_revenue?: { forecast: number; intervals: { lower: number[]; upper: number[]; mean: number[] } };
+    volume_kg?: number;
+  };
 };
 
 export default function ChatArtifactRenderer({
@@ -33,10 +38,13 @@ function getYAxisLabel(title?: string): string {
   if (!title) return "Value";
   const lower = title.toLowerCase();
   if (lower.includes("price")) {
-    return "Price (KSh per 90kg bag)";
+    return "Price (KSh per kg)";
   }
   if (lower.includes("volume") || lower.includes("export")) {
-    return "Volume (million 60-kg bags)";
+    return "Volume (kg)";
+  }
+  if (lower.includes("revenue")) {
+    return "Revenue (KSh)";
   }
   if (lower.includes("supply") || lower.includes("demand")) {
     return "Metric Tons";
@@ -45,9 +53,82 @@ function getYAxisLabel(title?: string): string {
 }
 
 function ChartRenderer({ data }: { data: ExtendedChartData }) {
+  if (data?.dual_forecast) {
+    return (
+      <div className="space-y-4 w-full">
+        {data.dual_forecast.unit_price && (
+          <div className="rounded-lg shadow-lg max-w-full w-full overflow-hidden bg-white border border-gray-100">
+            <Typography
+              variant="subtitle1"
+              align="center"
+              className="text-gray-900 mb-2 font-semibold px-4 pt-4"
+              sx={{ fontSize: '0.9rem' }}
+            >
+              Unit Price Forecast
+            </Typography>
+            <div className="px-4 pb-4">
+              <div className="w-full" style={{ minHeight: '240px' }}>
+                <BarChart
+                  xAxis={[
+                    {
+                      data: ["Forecast"],
+                      scaleType: "band",
+                    },
+                  ]}
+                  yAxis={[{ label: "Price (KSh/kg)" }]}
+                  series={[
+                    {
+                      data: [data.dual_forecast.unit_price.forecast],
+                      color: "#60a5fa",
+                    },
+                  ]}
+                  height={240}
+                  margin={{ top: 10, bottom: 30, left: 60, right: 20 }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+        {data.dual_forecast.total_revenue && (
+          <div className="rounded-lg shadow-lg max-w-full w-full overflow-hidden bg-white border border-gray-100">
+            <Typography
+              variant="subtitle1"
+              align="center"
+              className="text-gray-900 mb-2 font-semibold px-4 pt-4"
+              sx={{ fontSize: '0.9rem' }}
+            >
+              Revenue Forecast
+            </Typography>
+            <div className="px-4 pb-4">
+              <div className="w-full" style={{ minHeight: '240px' }}>
+                <BarChart
+                  xAxis={[
+                    {
+                      data: ["Forecast"],
+                      scaleType: "band",
+                    },
+                  ]}
+                  yAxis={[{ label: "Revenue (KSh)" }]}
+                  series={[
+                    {
+                      data: [data.dual_forecast.total_revenue.forecast],
+                      color: "#f472b6",
+                    },
+                  ]}
+                  height={240}
+                  margin={{ top: 10, bottom: 30, left: 60, right: 20 }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   if (data?.supply && data?.demand && data?.x) {
     return (
-      <div className="rounded-1xl shadow-lg max-w-180 w-full overflow-hidden bg-white border border-gray-100">
+      <div className="rounded-lg shadow-lg max-w-full w-full overflow-hidden bg-white border border-gray-100">
         {data.title && (
           <Typography
             variant="subtitle1"
@@ -59,7 +140,7 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
           </Typography>
         )}
         <div className="px-4 pb-4">
-          <div className="w-full" style={{ minHeight: '280px' }}>
+          <div className="w-full" style={{ minHeight: '300px' }}>
             <BarChart
               xAxis={[
                 {
@@ -81,8 +162,8 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
                   label: "Demand",
                 },
               ]}
-              height={280}
-              margin={{ top: 10, bottom: 50, left: 20, right: 20 }}
+              height={300}
+              margin={{ top: 10, bottom: 50, left: 60, right: 20 }}
             />
           </div>
         </div>
@@ -95,7 +176,7 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
     const yValues: number[] = data.regions.map((r: { name: string; price: number; change_pct?: number }) => r.price);
     
     return (
-      <div className="rounded-1xl shadow-lg max-w-180 w-full overflow-hidden bg-white border border-gray-100">
+      <div className="rounded-lg shadow-lg max-w-full w-full overflow-hidden bg-white border border-gray-100">
         {data.title && (
           <Typography
             variant="subtitle1"
@@ -107,7 +188,7 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
           </Typography>
         )}
         <div className="px-4 pb-4">
-          <div className="w-full" style={{ minHeight: '280px' }}>
+          <div className="w-full" style={{ minHeight: '300px' }}>
             <BarChart
               xAxis={[
                 {
@@ -116,7 +197,7 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
                   label: "Region",
                 },
               ]}
-              yAxis={[{ label: "Price (KSh per 90kg bag)" }]}
+              yAxis={[{ label: "Price (KSh per bag)" }]}
               series={[
                 {
                   data: yValues,
@@ -124,7 +205,7 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
                   label: "Price",
                 },
               ]}
-              height={280}
+              height={300}
               margin={{ top: 10, bottom: 50, left: 70, right: 20 }}
             />
           </div>
@@ -153,7 +234,7 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
   const xAxisLabel = xValues.some((x: string | number) => String(x).includes("20")) ? "Year" : "Period";
 
   return (
-    <div className="rounded-1xl shadow-lg max-w-180 w-full overflow-hidden bg-white border border-gray-100">
+    <div className="rounded-lg shadow-lg max-w-full w-full overflow-hidden bg-white border border-gray-100">
       {data.title && (
         <Typography
           variant="subtitle1"
@@ -166,7 +247,7 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
       )}
 
       <div className="px-4 pb-4">
-        <div className="w-full" style={{ minHeight: '280px' }}>
+        <div className="w-full" style={{ minHeight: '300px' }}>
           {chartType === "bar" && (
             <BarChart
               xAxis={[
@@ -183,7 +264,7 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
                   color: "#60a5fa",
                 },
               ]}
-              height={280}
+              height={300}
               margin={{ top: 10, bottom: 50, left: 70, right: 20 }}
             />
           )}
@@ -205,7 +286,7 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
                   curve: "linear",
                 },
               ]}
-              height={280}
+              height={300}
               margin={{ top: 10, bottom: 50, left: 70, right: 20 }}
             />
           )}
@@ -226,7 +307,7 @@ function ChartRenderer({ data }: { data: ExtendedChartData }) {
                   cornerRadius: 4,
                 },
               ]}
-              height={280}
+              height={300}
               margin={{ top: 10, bottom: 10, left: 20, right: 20 }}
             />
           )}
@@ -240,7 +321,7 @@ function TableRenderer({ data }: { data: TableData }) {
   if (data?.x && data?.y && Array.isArray(data.x) && Array.isArray(data.y)) {
     const minLength: number = Math.min(data.x.length, data.y.length);
     return (
-      <div className="rounded-2xl shadow-lg p-4 max-w-full w-full overflow-x-auto bg-white border border-gray-100">
+      <div className="rounded-lg shadow-lg p-4 max-w-full w-full overflow-x-auto bg-white border border-gray-100">
         {data.title && (
           <p className="mb-3 text-blue-600 font-semibold text-sm">{data.title}</p>
         )}
@@ -272,7 +353,7 @@ function TableRenderer({ data }: { data: TableData }) {
   }
 
   return (
-    <div className="shadow-lg p-4 max-w-full w-full overflow-x-auto bg-white border border-gray-100 rounded-2xl">
+    <div className="shadow-lg p-4 max-w-full w-full overflow-x-auto bg-white border border-gray-100 rounded-lg">
       {data.title && (
         <p className="mb-3 text-blue-600 font-semibold text-sm">{data.title}</p>
       )}

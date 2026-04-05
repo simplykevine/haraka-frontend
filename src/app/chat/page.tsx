@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 
 const PRE_PROMPTS = [
   "Forecast the prices of maize in the next 2 months for Kenya",
-  "what if we subsidize maize production in Kenya",
+  "Compare Kenya and Uganda coffee export prices and provide policy recommendations",
   "Simulate a 30% US tariff on Kenyan maize exports. Estimate impact on: exports, domestic prices, farmer income, trade balance, and market substitution.",
   "Assume a geopolitical conflict disrupts fertilizer exports from the Middle East and increases global shipping costs by 20%. Model the impact on Kenya's maize production, input costs, retail maize prices, and food inflation. Identify supply-chain vulnerabilities and estimate time lag effects.",
   "If Tanzania increases maize production by 15% due to favorable rainfall, how would this affect Kenyan maize exports, cross-border trade flows, and domestic producer prices?",

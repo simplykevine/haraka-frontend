@@ -27,7 +27,7 @@ const sendMessage = async (params: {
 export default function DashboardPage() {
   const router = useRouter();
 const handleSendMessage = () => {
-  router.push("/teaser");
+  router.push("/signin");
 };
   return (
     <main className="relative min-h-screen">

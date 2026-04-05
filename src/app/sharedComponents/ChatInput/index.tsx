@@ -163,21 +163,6 @@ export default function ChatInput({ conversationId, user, sendMessage, onRunCrea
     e.target.value = '';
   };
 
-  useEffect(() => {
-    const checkCameraSupport = async () => {
-      if (typeof navigator.mediaDevices !== 'undefined' && navigator.mediaDevices.getUserMedia) {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-          stream.getTracks().forEach((track) => track.stop());
-        } catch {
-          setCameraSupported(false);
-        }
-      } else {
-        setCameraSupported(false);
-      }
-    };
-    checkCameraSupport();
-  }, []);
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-1">
